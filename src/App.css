@@ -1,38 +1,110 @@
-.App {
-  text-align: center;
+html, body {
+    height: 100%;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.box, #root {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.box .boxrow.header {
+    flex: 0 1 auto;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.box .boxrow.content {
+    flex: 1 1 auto;
 }
 
-.App-link {
-  color: #61dafb;
+.flex-container {
+    display: flex;
+    height: 100%;
+    overflow-x: auto;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.flex-column {
+    border: 1px solid #aaaaaa;
+    border-radius: 5px;
+    background-color: #f1f1f1;
+    margin: 10px;
+    min-width: 355px;
+    max-width: 355px;
+}
+
+.add-column {
+    text-align: center;
+    border: 1px dashed #aaaaaa;
+    border-radius: 5px;
+    background-color: #f1f1f1;
+    margin: 10px;
+    min-width: 355px;
+    max-width: 355px;
+    font-size: 30px;
+    height: 100px;
+}
+
+.taskname {
+    padding: 10px 5px;
+}
+
+.taskcount {
+    background-color: #cccccc;
+    border-radius: 14px;
+    padding: 2px 8px;
+    margin-right: 5px;
+}
+
+.tasklist {
+    overflow-y: auto;
+}
+
+.task {
+    background-color: #ffffff;
+    margin: 5px 10px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #aaaaaa;
+    height: 100px;
+    overflow: hidden;
+}
+
+.plus-button {
+    float: right;
+    padding-right: 10px;
+    font-weight: bold;
+    font-size: larger;
+    cursor: pointer;
+}
+
+.title {
+    font-weight: bold;
+}
+
+.description {
+    text-overflow: ellipsis;
+}
+
+textarea {
+    width: 100%;
+    margin: 5px 10px;
+    border-radius: 5px;
+    height: 63px;
+    border: 1px solid #aaaaaa;
+}
+
+.add-task {
+    margin: 5px 10px;
+}
+
+.button-add-or-cancel {
+    width: 48%;
+    border: 1px solid #aaaaaa !important;
+}
+
+.button-cancel {
+    float: right;
+}
+
+.projects {
+    border:  1px solid #dddddd;
 }
