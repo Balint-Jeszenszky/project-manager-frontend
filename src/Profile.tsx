@@ -9,7 +9,7 @@ const Profile: React.FC = () => {
                     <table className="table table-borderless">
                         <tr>
                             <td className="align-middle"><label htmlFor="name_input">Name:</label></td>
-                            <td><fieldset disabled><input type="text" className="form-control disabled" id="name_input" name="name" value="Gipsz Jakab" /></fieldset></td>
+                            <td><input type="text" className="form-control" id="name_input" name="name" value="Jeszenszky Bálint" /></td>
                         </tr>
                         <tr>
                             <td className="align-middle"><label htmlFor="email_input">Email:</label></td>

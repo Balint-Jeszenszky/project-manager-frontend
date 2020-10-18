@@ -1,19 +1,45 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import Auth from './Auth';
 import Project from './Project';
 import MyProjects from './MyProjects';
 import Profile from './Profile';
 import Logout from './Logout';
+import {projectType} from './DataTypes';
 
-const Content = () => (
-    <Switch>
-        <Route exact path='/auth' component={Auth} />
-        <Route exact path='/projects' component={MyProjects} />
-        <Route path='/projects/:id' component={Project} />
-        <Route exact path='/profile' component={Profile} />
-        <Route exact path='/logout' component={Logout} />
-    </Switch>
-)
+interface ContentProps {
+    loggedIn: boolean;
+    setLoggedin(param: boolean): void;
+    setProject(p: projectType | undefined): void;
+}
+
+const Content: React.FC<ContentProps> = props => {
+    return (
+        <Switch>
+            <Route exact path='/'>
+                {props.loggedIn ? <Redirect to="/projects" /> : <Redirect to="/auth" />}
+            </Route>
+            <Route exact path="/auth">
+                {props.loggedIn ? <Redirect to="/projects" /> : <Auth setLoggedin={props.setLoggedin} />}
+            </Route>
+            <Route exact path="/projects">
+                {props.loggedIn ? <MyProjects /> : <Redirect to="/auth" />}
+            </Route>
+            <Route path="/projects/:id">
+                {props.loggedIn ? <Project /> : <Redirect to="/auth" />}
+            </Route>
+            <Route exact path="/profile">
+                {props.loggedIn ? <Profile /> : <Redirect to="/auth" />}
+            </Route>
+
+
+            {/* <Route exact path='/auth' render={() => (<Auth setLoggedin={props.setLoggedin} />)}/>
+            <Route exact path='/projects' component={MyProjects} />
+            <Route path='/projects/:id' component={Project} />
+            <Route exact path='/profile' component={Profile} /> */}
+            <Route exact path='/logout' render={() => (<Logout setLoggedin={props.setLoggedin} />)} />
+        </Switch>
+    );
+};
 
 export default Content;

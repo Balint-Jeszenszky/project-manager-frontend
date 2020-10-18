@@ -1,30 +1,35 @@
-import React, {useState} from 'react';
+import React, {useState, ReactNode} from 'react';
 import { Link } from 'react-router-dom';
+import {projectType} from './DataTypes';
 
 interface NavbarProps {
+    userID: number;
     active: string;
-    activeproject: {
-        name: string | undefined,
-        path: string
-    };
+    activeproject: projectType | undefined;
+    setProject(p:  projectType): void;
+    loggedIn: boolean;
 };
 
 const Navbar: React.FC<NavbarProps> = props => {
-    /*const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<boolean>(false);
-    const [projectnames, setProjectnames] = useState<object>({});
+    const [projects, setProjects] = useState<ReactNode[]>([]);
 
-    fetch('https://my-json-server.typicode.com/Balint-Jeszenszky/temalab-mock-backend/taskgroups')
+    const createSubmenu = (e: projectType): ReactNode => {
+        return (<Link to={`/projects/${e.id}`} key={`projects${e.id}`} className="dropdown-item">{e.name}</Link>);
+    }
+
+    if (props.loggedIn) {
+        fetch('https://my-json-server.typicode.com/Balint-Jeszenszky/temalab-mock-backend/projects')
         .then(response => response.json())
         .then(response => {
-            setLoading(false);
-            setProjectnames(response);
-        })
-        .catch(error => setError(true));*/
-
-
+            let projs: ReactNode[] = [];
+            response.projects.forEach((e: projectType)=>{
+                projs.push(createSubmenu(e));
+            });
+            setProjects(projs);
+        });
+    }
+    
     const pagenames = [
-        props.activeproject,
         {name: 'My projects', path: '#'},
         {name: 'Profile', path: '/profile'},
         {name: 'Logout', path: '/logout'}
@@ -35,15 +40,14 @@ const Navbar: React.FC<NavbarProps> = props => {
             const classname = `nav-item dropdown${active}`;
             return (
                 <li className={classname} key={`nav${id}`}>
-                    <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                    <a className="nav-link dropdown-toggle" href="/projects" id="navbarDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {page.name}
                     </a>
                     <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <Link to="/projects/1" className="dropdown-item" href="#">TODO 1</Link>
-                        <Link to="/projects/2" className="dropdown-item" href="#">TODO 2</Link>
+                        {projects}
                         <div className="dropdown-divider"></div>
-                        <Link to="/projects" className="dropdown-item" href="#">All todos</Link>
+                        <Link to="/projects" className="dropdown-item">All projects</Link>
                     </div>
                 </li>
             );
@@ -72,7 +76,7 @@ const Navbar: React.FC<NavbarProps> = props => {
 
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul className="navbar-nav ml-auto">
-                    {pages}
+                    {props.loggedIn && pages}
                 </ul>
             </div>
         </nav>

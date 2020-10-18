@@ -1,6 +1,12 @@
 import React, {ReactNode} from 'react';
+import { Link } from 'react-router-dom';
 
-const Auth: React.FC = () => {
+interface AuthProps {
+    setLoggedin(params: boolean): void;
+}
+
+const Auth: React.FC<AuthProps> = props => {
+    const setLoggedin = () => {props.setLoggedin(true)};
     const login = (): ReactNode => {
         return (
             <div className="col-12 col-lg-4 border border-dark rounded mt-2 mt-lg-5">
@@ -16,7 +22,7 @@ const Auth: React.FC = () => {
                         <button className="btn btn-link">Forgot password</button>
                     </div>
                     <div className="text-center form-group">
-                        <a className="btn btn-primary" href="/projects">Login</a>
+                        <Link className="btn btn-primary" to="/projects" onClick={setLoggedin}>Login</Link>
                     </div>
                 </form>
             </div>

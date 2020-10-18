@@ -1,7 +1,12 @@
 import React from 'react';
 import {Redirect} from 'react-router-dom';
 
-const Logout: React.FC = () => {
+interface LogoutProps {
+    setLoggedin(param: boolean): void;
+}
+
+const Logout: React.FC<LogoutProps> = props => {
+    props.setLoggedin(false);
     return (
         <Redirect to="/auth" />
     );

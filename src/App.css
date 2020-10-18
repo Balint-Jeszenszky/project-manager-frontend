@@ -64,16 +64,13 @@ html, body {
     padding: 5px;
     border-radius: 5px;
     border: 1px solid #aaaaaa;
-    height: 100px;
+    /* height: 100px; */
     overflow: hidden;
 }
 
-.plus-button {
+.task-buttons {
     float: right;
-    padding-right: 10px;
-    font-weight: bold;
-    font-size: larger;
-    cursor: pointer;
+    padding-right: 10px !important;
 }
 
 .title {
@@ -86,7 +83,6 @@ html, body {
 
 textarea {
     width: 100%;
-    margin: 5px 10px;
     border-radius: 5px;
     height: 63px;
     border: 1px solid #aaaaaa;
@@ -106,5 +102,26 @@ textarea {
 }
 
 .projects {
-    border:  1px solid #dddddd;
+    border: 1px solid #dddddd;
+}
+
+.taskdetail {
+    width: 100%;
+    border: 1px solid #aaaaaa;
+}
+
+.inisible {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    outline: 0;
+}
+
+.inisible:focus {
+    outline: 0;
+}
+
+.dropdown {
+    display: inline;
 }
