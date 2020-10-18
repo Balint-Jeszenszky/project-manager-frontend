@@ -67,7 +67,7 @@ const Navbar: React.FC<NavbarProps> = props => {
         pages.shift();
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark boxrow header">
-            <a className="navbar-brand" href="/">Project manager</a>
+            <Link className="navbar-brand" to="/">Project manager</Link>
 
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

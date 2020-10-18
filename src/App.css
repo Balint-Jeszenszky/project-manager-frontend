@@ -64,8 +64,8 @@ html, body {
     padding: 5px;
     border-radius: 5px;
     border: 1px solid #aaaaaa;
-    /* height: 100px; */
-    overflow: hidden;
+    min-height: 80px;
+    /* overflow: hidden; */
 }
 
 .task-buttons {
@@ -84,7 +84,7 @@ html, body {
 textarea {
     width: 100%;
     border-radius: 5px;
-    height: 63px;
+    height: 38px;
     border: 1px solid #aaaaaa;
 }
 

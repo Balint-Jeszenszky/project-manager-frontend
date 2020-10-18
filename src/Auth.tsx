@@ -6,7 +6,7 @@ interface AuthProps {
 }
 
 const Auth: React.FC<AuthProps> = props => {
-    const setLoggedin = () => {props.setLoggedin(true)};
+    
     const login = (): ReactNode => {
         return (
             <div className="col-12 col-lg-4 border border-dark rounded mt-2 mt-lg-5">
@@ -22,7 +22,7 @@ const Auth: React.FC<AuthProps> = props => {
                         <button className="btn btn-link">Forgot password</button>
                     </div>
                     <div className="text-center form-group">
-                        <Link className="btn btn-primary" to="/projects" onClick={setLoggedin}>Login</Link>
+                        <Link className="btn btn-primary" to="/projects" onClick={() => props.setLoggedin(true)}>Login</Link>
                     </div>
                 </form>
             </div>

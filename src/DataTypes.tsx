@@ -4,3 +4,15 @@ export type projectType = {
     description: string
 };
 
+export type taskgroupType = {
+    id: number,
+    name: string
+};
+
+export type taskType = {
+    title: string,
+    description: string,
+    deadline: number,
+    state: number,
+    priority: number
+};
