@@ -5,7 +5,7 @@ export type projectType = {
 };
 
 export type taskgroupType = {
-    id: number,
+    place: number,
     name: string
 };
 

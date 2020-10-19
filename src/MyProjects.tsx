@@ -21,8 +21,8 @@ const MyProjects: React.FC = () => {
                     {e.description}
                 </td>
                 <td className="text-right">
-                    <button className="btn btn-warning mr-2"><i className="fas fa-edit" /></button>
-                    <button className="btn btn-danger" onClick={() => deleteProject(i)}><i className="fas fa-trash" /></button>
+                    <button className="btn btn-warning"><i className="fas fa-edit" /></button>
+                    <button className="btn btn-danger ml-2" onClick={() => deleteProject(i)}><i className="fas fa-trash" /></button>
                 </td>
             </tr>
         );

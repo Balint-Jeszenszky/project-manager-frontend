@@ -25,6 +25,7 @@ const Task: React.FC<TaskProps> = props => {
                 <button className="inisible task-buttons" onClick={() => props.onMove(props.task.priority, -1)}><i className="fas fa-angle-down"></i></button>
             </div>
             <p className="description">{props.task.description}</p>
+            <p className="description">{new Date(props.task.deadline*1000).toDateString()}</p>
         </div>
     );
 };

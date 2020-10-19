@@ -78,7 +78,7 @@ html, body {
 }
 
 .description {
-    text-overflow: ellipsis;
+    margin: 0;
 }
 
 textarea {

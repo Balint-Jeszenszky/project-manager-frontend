@@ -3,9 +3,10 @@ import { taskType } from './DataTypes';
 import Task from './Task';
 
 interface ProjectGroupProps {
-    id: number;
+    place: number;
     name: string;
     tasks: taskType[]
+    onMove(n: number, dir: number): void;
 };
 
 const ProjectGroup: React.FC<ProjectGroupProps> = props => {
@@ -54,10 +55,10 @@ const ProjectGroup: React.FC<ProjectGroupProps> = props => {
                 <button className="inisible task-buttons mr-2 px-1" onClick={showTaskAdder}>
                     <i className="fas fa-plus"></i>
                 </button>
-                <button className="inisible task-buttons mr-2 px-1">
+                <button className="inisible task-buttons mr-2 px-1" onClick={() => props.onMove(props.place, 1)}>
                     <i className="fas fa-angle-right"></i>
                 </button>
-                <button className="inisible task-buttons mr-2 px-1">
+                <button className="inisible task-buttons mr-2 px-1" onClick={() => props.onMove(props.place, -1)}>
                     <i className="fas fa-angle-left"></i>
                 </button>
             </div>
@@ -72,7 +73,11 @@ const ProjectGroup: React.FC<ProjectGroupProps> = props => {
         );
     };
 
-    const move = (n: number, dir: number) => {
+    const deleteTask = () => {
+
+    }
+
+    const moveTask = (n: number, dir: number) => {
         updateTaskNodess(props.tasks.map((t: taskType) => {
             if (t.priority === n) {
                 t.priority += dir;
@@ -82,11 +87,13 @@ const ProjectGroup: React.FC<ProjectGroupProps> = props => {
             return (
                 <Task
                     task={t}
-                    onMove={move}
+                    onMove={moveTask}
                     key={t.title}
                 />
             );
         }));
+        setLoad(false);
+        loadData();
     };
 
     const confirmAdd = () => {
@@ -100,13 +107,13 @@ const ProjectGroup: React.FC<ProjectGroupProps> = props => {
                     state:2,
                     priority:1
                 }}
-                onMove={move}
+                onMove={moveTask}
             />,
             ...taskNodes
         ]);
     }
 
-    if (!load) {
+    const loadData = () => {
         updateTaskNodess(props.tasks.sort((a: taskType, b: taskType) => {
             if (a.priority > b.priority) return -1;
             return 1;
@@ -114,11 +121,15 @@ const ProjectGroup: React.FC<ProjectGroupProps> = props => {
             return (
                 <Task
                     task={e}
-                    onMove={move}
+                    onMove={moveTask}
                 />
             );
         }));
         setLoad(true);
+    };
+
+    if (!load) {
+        loadData();
     }
     
     return (
