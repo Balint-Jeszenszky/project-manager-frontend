@@ -82,9 +82,10 @@ const MyProjects: React.FC = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {projects}
+                    {loaded && projects}
                 </tbody>
             </table>
+            {!loaded && 'Loading...'}
         </div>
     );
 };

@@ -70,7 +70,8 @@ const Project: React.FC = () => {
     return (
         <div className="boxrow content">
             <div className="flex-container">
-                {projectGroupNodes}
+                {!loaded && 'Loading...'}
+                {loaded && projectGroupNodes}
                 {addColumn()}
             </div>
         </div>

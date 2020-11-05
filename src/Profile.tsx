@@ -25,7 +25,7 @@ const Profile: React.FC = () => {
                                 <td><input type="password" className="form-control" id="new_pass_input" name="new_password" /></td>
                             </tr>
                             <tr>
-                                <td className="align-middle"><label htmlFor="new_pass_input">Confirm password:</label></td>
+                                <td className="align-middle"><label htmlFor="new_pass_confirm">Confirm password:</label></td>
                                 <td><input type="password" className="form-control" id="new_pass_confirm" name="new_password_confirm" /></td>
                             </tr>
                             <tr>

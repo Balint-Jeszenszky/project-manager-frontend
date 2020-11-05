@@ -73,9 +73,9 @@ const ProjectGroup: React.FC<ProjectGroupProps> = props => {
         );
     };
 
-    const deleteTask = () => {
+    // const deleteTask = () => {
 
-    }
+    // }
 
     const moveTask = (n: number, dir: number) => {
         updateTaskNodess(props.tasks.map((t: taskType) => {
@@ -101,8 +101,8 @@ const ProjectGroup: React.FC<ProjectGroupProps> = props => {
             addTaskForm(),
             <Task
                 task={{
-                    title:'lol',
-                    description:'lol',
+                    title:'title',
+                    description:'description',
                     deadline:3,
                     state:2,
                     priority:1

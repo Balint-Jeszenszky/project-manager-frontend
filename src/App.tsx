@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import Content from './Content';
 import './App.css';
@@ -11,15 +11,17 @@ const App: React.FC = () => {
     const [userID, setUserID] = useState<number>(-1);
     const [currentProject, setCurrentProject] = useState<projectType | undefined>(undefined);
 
-    fetch('https://my-json-server.typicode.com/Balint-Jeszenszky/temalab-mock-backend/logindata')
+    useEffect(()=>{
+        fetch('https://my-json-server.typicode.com/Balint-Jeszenszky/temalab-mock-backend/logindata')
         .then(response => response.json())
         .then(response => {
+            console.log(response.userid);
             setLoading(false);
             setUserID(response.userid);
         })
-        .catch(error => setError(true));
+        .catch(error => setError(true))
+    }, []);
     
-
     return (
         <div className="box">
             {loading && <div>Loading...</div>}
