@@ -8,7 +8,7 @@ const App: React.FC = () => {
     const [loggedIn, setLoggedin] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<boolean>(false);
-    const [userID, setUserID] = useState<number>(-1);
+    const [userID, setUserID] = useState<number>(1);
     const [currentProject, setCurrentProject] = useState<projectType | undefined>(undefined);
 
     useEffect(()=>{

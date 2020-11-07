@@ -22,7 +22,7 @@ const Navbar: React.FC<NavbarProps> = props => {
         .then(response => response.json())
         .then(response => {
             let projs: ReactNode[] = [];
-            response.projects.forEach((e: projectType)=>{
+            response.forEach((e: projectType)=>{
                 projs.push(createSubmenu(e));
             });
             setProjects(projs);
