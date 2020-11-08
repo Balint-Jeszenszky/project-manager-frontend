@@ -1,12 +1,9 @@
 import React, {useState, ReactNode} from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useRouteMatch } from 'react-router-dom';
 import {projectType} from './DataTypes';
 
 interface NavbarProps {
     userID: number;
-    active: string;
-    activeproject: projectType | undefined;
-    setProject(p:  projectType): void;
     loggedIn: boolean;
 };
 
@@ -30,13 +27,13 @@ const Navbar: React.FC<NavbarProps> = props => {
     }
     
     const pagenames = [
-        {name: 'My projects', path: '#'},
-        {name: 'Profile', path: '/profile'},
-        {name: 'Logout', path: '/logout'}
+        {name: 'My projects', path: '#', active: useRouteMatch('/projects') !== null},
+        {name: 'Profile', path: '/profile', active: useRouteMatch('/profile') !== null},
+        {name: 'Logout', path: '/logout', active: false}
     ];
     const pages = pagenames.map((page, id) => {
         if (page.name === 'My projects') {
-            const active = props.active === page.name ? ' active' : '';
+            const active = page.active ? ' active' : '';
             const classname = `nav-item dropdown${active}`;
             return (
                 <li className={classname} key={`nav${id}`}>
@@ -51,20 +48,17 @@ const Navbar: React.FC<NavbarProps> = props => {
                     </div>
                 </li>
             );
-        } else if (page.name !== undefined) {
-            const active = props.active === page.name ? ' active' : '';
+        } else {
+            const active = page.active ? ' active' : '';
             const classname = `nav-item${active}`;
             return (
                 <li className={classname} key={`nav${id}`}>
                     <Link to={page.path} className="nav-link">{page.name}</Link>
                 </li>
             );
-        } else {
-            return undefined;
         }
     });
-    if (pages[0] === undefined)
-        pages.shift();
+    
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark boxrow header">
             <Link className="navbar-brand" to="/">Project manager</Link>

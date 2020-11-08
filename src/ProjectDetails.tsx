@@ -15,8 +15,10 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = props => {
     const [editing, setEditing] = useState<boolean>(false);
 
     const deleteProject = () => {
-        //delete
-        props.updateProjects();
+        fetch(`http://localhost:8888/api/projects/${props.id}`, {
+            method: 'DELETE',
+            redirect: 'follow'
+        }).then(() => props.updateProjects());
     }
 
     const onNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,8 +28,17 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = props => {
         setProjectDescription(e.target.value);
     }
     const edit = () => {
-        setEditing(false)
-        //post
+        setEditing(false);
+        fetch(`http://localhost:8888/api/projects/${props.id}`, {
+            method: 'PUT',
+            cache: 'no-cache',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            redirect: 'follow',
+            body: JSON.stringify({id: props.id, userID: 1, name: projectName, description: projectDescription}),
+        }).then(() => props.updateProjects());
     }
 
     return (

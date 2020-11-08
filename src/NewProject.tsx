@@ -16,17 +16,15 @@ const NewProject: React.FC<NewProjectProps> = props => {
     }
 
     const addProject = () =>{
-        fetch('https://postb.in/1604778180099-8157978984527', {
-            method: "POST",
-            mode: "no-cors",
-            cache: "no-cache",
+        fetch('http://localhost:8888/api/projects', {
+            method: 'POST',
+            cache: 'no-cache',
             headers: {
-                "Content-Type": "application/json",
-                // "Content-Type": "application/x-www-form-urlencoded",
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
             },
-            redirect: "follow",
-            referrer: "no-referrer",
-            body: JSON.stringify({userID: 1, projectName, projectDescription}),
+            redirect: 'follow',
+            body: JSON.stringify({userID: 1, name: projectName, description: projectDescription}),
         }).then(() => props.updateProjects());
     }
 

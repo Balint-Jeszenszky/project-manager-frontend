@@ -9,13 +9,12 @@ const App: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<boolean>(false);
     const [userID, setUserID] = useState<number>(1);
-    const [currentProject, setCurrentProject] = useState<projectType | undefined>(undefined);
 
     useEffect(()=>{
         fetch('https://my-json-server.typicode.com/Balint-Jeszenszky/temalab-mock-backend/logindata')
         .then(response => response.json())
         .then(response => {
-            console.log(response.userid);
+            setUserID(response.userid);
             setLoading(false);
             setUserID(response.userid);
         })
@@ -28,16 +27,13 @@ const App: React.FC = () => {
             {!loading && !error && 
                 <div className="box">
                     <Navbar
-                        active="Profile"
                         userID={userID}
-                        activeproject={currentProject}
-                        setProject={setCurrentProject}
                         loggedIn={loggedIn}
                     />
                     <Content
                         loggedIn={loggedIn}
                         setLoggedin={setLoggedin}
-                        setProject={setCurrentProject}
+                        userID={userID}
                     />
                 </div>
             }

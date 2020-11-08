@@ -1,39 +1,43 @@
 import React, { useState, ReactNode } from 'react';
 import { taskType } from './DataTypes';
 import Task from './Task';
+import NewTask from './NewTask';
 
 interface ProjectGroupProps {
     place: number;
     name: string;
-    tasks: taskType[]
     onMove(n: number, dir: number): void;
 };
 
 const ProjectGroup: React.FC<ProjectGroupProps> = props => {
-    const [taskNodes, updateTaskNodess] = useState<ReactNode[]>([]);
+    const [taskNodes, updateTaskNodes] = useState<ReactNode[]>([]);
     const [addingTask, setAddingTask] = useState<boolean>(false);
     const [load, setLoad] = useState<boolean>(false);
 
     const cancelAdd = (): void => {
-        updateTaskNodess(taskNodes.filter((e) => {return typeof e !== typeof Task}));
+        updateTaskNodes(taskNodes.filter((e) => {return typeof e !== typeof Task}));
         setAddingTask(false);
     };
-
-    const addTaskForm = (): ReactNode => {
-        return (
-            <div className="add-task">
-                <input type="text" className="form-control-sm taskdetail mb-1" placeholder="Title" />
-                <textarea placeholder="Enter a note"></textarea>
-                <input type="date" className="form-control-sm taskdetail mb-1" />
-                <button className="btn btn-success btn-sm disabled button-add-or-cancel"  onClick={confirmAdd}>Add</button>
-                <button className="btn btn-light btn-sm button-cancel button-add-or-cancel" onClick={cancelAdd}>Cancel</button>
-            </div>
-        );
-    };
+    const confirmAdd = () => {
+        updateTaskNodes([
+            <NewTask confirmAdd={confirmAdd} cancelAdd={cancelAdd} />,
+            <Task
+                task={{
+                    title:'title',
+                    description:'description',
+                    deadline:3,
+                    state:2,
+                    priority:1
+                }}
+                onMove={moveTask}
+            />,
+            ...taskNodes
+        ]);
+    }
 
     const showTaskAdder = () => {
         if (!addingTask) {
-            updateTaskNodess([addTaskForm(), ...taskNodes]);
+            updateTaskNodes([<NewTask confirmAdd={confirmAdd} cancelAdd={cancelAdd} />, ...taskNodes]);
             setAddingTask(true);
         }
     };
@@ -41,7 +45,7 @@ const ProjectGroup: React.FC<ProjectGroupProps> = props => {
     const columnheader = (): ReactNode => {
         return (
             <div className="taskname">
-                <span className="taskcount">{props.tasks.length}</span>
+                <span className="taskcount">{ 5 /*props.tasks.length*/}</span>
                 {props.name}
                 <div className="dropdown">
                     <button className="inisible task-buttons" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -78,54 +82,37 @@ const ProjectGroup: React.FC<ProjectGroupProps> = props => {
     // }
 
     const moveTask = (n: number, dir: number) => {
-        updateTaskNodess(props.tasks.map((t: taskType) => {
-            if (t.priority === n) {
-                t.priority += dir;
-            } else if ((t.priority > n && dir === 1) || (t.priority < n && dir === -1)) {
-                t.priority -= dir;
-            }
-            return (
-                <Task
-                    task={t}
-                    onMove={moveTask}
-                    key={t.title}
-                />
-            );
-        }));
-        setLoad(false);
-        loadData();
+        // updateTaskNodes(props.tasks.map((t: taskType) => {
+        //     if (t.priority === n) {
+        //         t.priority += dir;
+        //     } else if ((t.priority > n && dir === 1) || (t.priority < n && dir === -1)) {
+        //         t.priority -= dir;
+        //     }
+        //     return (
+        //         <Task
+        //             task={t}
+        //             onMove={moveTask}
+        //             key={t.title}
+        //         />
+        //     );
+        // }));
+        // setLoad(false);
+        // loadData();
     };
 
-    const confirmAdd = () => {
-        updateTaskNodess([
-            addTaskForm(),
-            <Task
-                task={{
-                    title:'title',
-                    description:'description',
-                    deadline:3,
-                    state:2,
-                    priority:1
-                }}
-                onMove={moveTask}
-            />,
-            ...taskNodes
-        ]);
-    }
-
     const loadData = () => {
-        updateTaskNodess(props.tasks.sort((a: taskType, b: taskType) => {
-            if (a.priority > b.priority) return -1;
-            return 1;
-        }).map((e: taskType) => {
-            return (
-                <Task
-                    task={e}
-                    onMove={moveTask}
-                />
-            );
-        }));
-        setLoad(true);
+        // updateTaskNodes(props.tasks.sort((a: taskType, b: taskType) => {
+        //     if (a.priority > b.priority) return -1;
+        //     return 1;
+        // }).map((e: taskType) => {
+        //     return (
+        //         <Task
+        //             task={e}
+        //             onMove={moveTask}
+        //         />
+        //     );
+        // }));
+        // setLoad(true);
     };
 
     if (!load) {

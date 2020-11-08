@@ -9,8 +9,8 @@ import {projectType} from './DataTypes';
 
 interface ContentProps {
     loggedIn: boolean;
+    userID: number;
     setLoggedin(param: boolean): void;
-    setProject(p: projectType | undefined): void;
 }
 
 const Content: React.FC<ContentProps> = props => {
@@ -23,10 +23,10 @@ const Content: React.FC<ContentProps> = props => {
                 {props.loggedIn ? <Redirect to="/projects" /> : <Auth setLoggedin={props.setLoggedin} />}
             </Route>
             <Route exact path="/projects">
-                {props.loggedIn ? <MyProjects /> : <Redirect to="/auth" />}
+                {props.loggedIn ? <MyProjects userID={props.userID} /> : <Redirect to="/auth" />}
             </Route>
             <Route path="/projects/:id">
-                {props.loggedIn ? <Project /> : <Redirect to="/auth" />}
+                {props.loggedIn ? <Project userID={props.userID} /> : <Redirect to="/auth" />}
             </Route>
             <Route exact path="/profile">
                 {props.loggedIn ? <Profile /> : <Redirect to="/auth" />}

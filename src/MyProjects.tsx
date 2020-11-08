@@ -3,7 +3,11 @@ import {projectType} from './DataTypes';
 import NewProject from './NewProject';
 import ProjectDetails from './ProjectDetails';
 
-const MyProjects: React.FC = () => {
+interface MyProjectsProps {
+    userID: number;
+}
+
+const MyProjects: React.FC<MyProjectsProps> = (props) => {
     const [projects, setProjects] = useState<ReactNode[]>([]);
     const [loaded, setLoaded] = useState<boolean>(false);
     const [addingProject, setAddingProject] = useState<boolean>(false);
@@ -13,7 +17,7 @@ const MyProjects: React.FC = () => {
     };
 
     useEffect(() => {
-        fetch('https://my-json-server.typicode.com/Balint-Jeszenszky/temalab-mock-backend/projects')
+        fetch(`http://localhost:8888/api/projects/${props.userID}`)
         .then(response => response.json())
         .then(response => {
             let projs: ReactNode[] = [];

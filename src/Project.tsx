@@ -1,12 +1,21 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useState, useEffect } from 'react';
+import { useRouteMatch } from "react-router-dom";
 import ProjectGroup from './ProjectGroup';
 import {taskgroupType, taskType} from './DataTypes';
 
-const Project: React.FC = () => {
+interface ProjectProps {
+    userID: number;
+}
+
+const Project: React.FC<ProjectProps> = (props) => {
     const [projectGroupNodes, setProjectGroupNodes] = useState<ReactNode[]>([]);
     const [projectGroups, setProjectGroups] = useState<taskgroupType[]>([]);
     const [tasklist, setTasklist] = useState<taskType[]>([]);
     const [loaded, setLoaded] = useState<boolean>(false);
+
+    // i love typescript sooooooooo mutch...
+    // const PROJECTID = useRouteMatch().params.id;
+    const PROJECTID = Object.assign({id: 0}, useRouteMatch().params).id;
 
     const moveGroup = (n: number, dir: number) => {
         setProjectGroupNodes(projectGroups.map((e: taskgroupType) => {
@@ -19,26 +28,23 @@ const Project: React.FC = () => {
                 <ProjectGroup
                     name={e.name}
                     place={e.place}
-                    tasks={tasklist.filter((t: taskType) => t.state === e.place)}
                     onMove={moveGroup}
                 />
             );
         }));
         setLoaded(false);
-        loadData();
     };
 
-    const loadData = () => {
-        fetch('https://my-json-server.typicode.com/Balint-Jeszenszky/temalab-mock-backend/project1')
+    useEffect(() => {
+        fetch(`http://localhost:8888/api/project/${PROJECTID}`)
         .then(response => response.json())
         .then(response => {
             let groups: ReactNode[] = [];
-            response.taskgroups.forEach((e: taskgroupType) => {
+            response.forEach((e: taskgroupType) => {
                 groups.push(
                     <ProjectGroup
                         name={e.name}
                         place={e.place}
-                        tasks={response.tasks.filter((t: taskType) => t.state === e.place)}
                         onMove={moveGroup}
                         key={`group${e.place}`}
                     />
@@ -49,14 +55,10 @@ const Project: React.FC = () => {
             setProjectGroupNodes(groups);
             setLoaded(true);
         });
-    }
-
-    if (!loaded) {
-        loadData();
-    }
+    }, []);
 
     const addGroup = () => {
-        setProjectGroupNodes([...projectGroupNodes, <ProjectGroup name="Dummy" place={Math.random()} tasks={[]} onMove={moveGroup} />]);
+        setProjectGroupNodes([...projectGroupNodes, <ProjectGroup name="Dummy" place={Math.random()} onMove={moveGroup} />]);
     }
 
     const addColumn = () => {
