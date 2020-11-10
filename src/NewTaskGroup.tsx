@@ -1,5 +1,5 @@
 import React, { useState, ReactNode } from 'react';
-import ProjectGroup from './ProjectGroup';
+import TaskGroup from './TaskGroup';
 
 interface NewTaskGroupProps {
     addGroup(group: ReactNode): void;
@@ -25,7 +25,9 @@ const NewTaskGroup: React.FC<NewTaskGroupProps> = props => {
             },
             redirect: 'follow',
             body: JSON.stringify({ProjectID: props.projectID, Name: name, Priority: 5}),
-        }).then(() => props.addGroup(<ProjectGroup place={5} name={name} />));
+        })
+        .then(response => response.json())
+        .then(response => props.addGroup(<TaskGroup id={response.id} place={5} name={name} />));
     }
 
     return (

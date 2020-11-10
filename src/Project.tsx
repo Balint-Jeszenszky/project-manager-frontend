@@ -1,6 +1,6 @@
 import React, { ReactNode, useState, useEffect } from 'react';
 import { useRouteMatch } from "react-router-dom";
-import ProjectGroup from './ProjectGroup';
+import TaskGroup from './TaskGroup';
 import NewTaskGroup from './NewTaskGroup';
 import {taskgroupType, taskType} from './DataTypes';
 
@@ -17,22 +17,22 @@ const Project: React.FC<ProjectProps> = (props) => {
     // const PROJECTID = useRouteMatch().params.id;
     const PROJECTID = parseInt(Object.assign({id: ''}, useRouteMatch().params).id);
 
-    const moveGroup = (n: number, dir: number) => {
-        setProjectGroupNodes(projectGroups.map((e: taskgroupType) => {
-            if (e.place === n) {
-                e.place += dir;
-            } else if ((e.place > n && dir === 1) || (e.place < n && dir === -1)) {
-                e.place -= dir;
-            }
-            return (
-                <ProjectGroup
-                    name={e.name}
-                    place={e.place}
-                />
-            );
-        }));
-        setLoaded(false);
-    };
+    // const moveGroup = (n: number, dir: number) => {
+    //     setProjectGroupNodes(projectGroups.map((e: taskgroupType) => {
+    //         if (e.place === n) {
+    //             e.place += dir;
+    //         } else if ((e.place > n && dir === 1) || (e.place < n && dir === -1)) {
+    //             e.place -= dir;
+    //         }
+    //         return (
+    //             <TaskGroup
+    //                 name={e.name}
+    //                 place={e.place}
+    //             />
+    //         );
+    //     }));
+    //     setLoaded(false);
+    // };
 
     useEffect(() => {
         fetch(`http://localhost:8888/api/project/${PROJECTID}`)
@@ -41,9 +41,10 @@ const Project: React.FC<ProjectProps> = (props) => {
             let groups: ReactNode[] = [];
             response.forEach((e: taskgroupType) => {
                 groups.push(
-                    <ProjectGroup
+                    <TaskGroup
                         name={e.name}
                         place={e.place}
+                        id={e.id}
                         key={`group${e.place}`}
                     />
                 );

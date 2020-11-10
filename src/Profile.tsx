@@ -9,7 +9,7 @@ const Profile: React.FC = () => {
     const [confirmPass, setConfirmPass] = useState<string>('');
 
     useEffect(() => {
-        fetch('https://my-json-server.typicode.com/Balint-Jeszenszky/temalab-mock-backend/users/1')
+        fetch('http://localhost:8888/api/user/1')
         .then(response => response.json())
         .then(response => {
             setName(response.name);

@@ -1,32 +1,33 @@
-import React, { useState, ReactNode } from 'react';
+import React, { useState, useEffect, ReactNode } from 'react';
 import { taskType } from './DataTypes';
 import Task from './Task';
 import NewTask from './NewTask';
 
-interface ProjectGroupProps {
+interface TaskGroupProps {
     place: number;
     name: string;
+    id: number;
 };
 
-const ProjectGroup: React.FC<ProjectGroupProps> = props => {
-    const [taskNodes, updateTaskNodes] = useState<ReactNode[]>([]);
+const TaskGroup: React.FC<TaskGroupProps> = props => {
+    const [taskNodes, setTaskNodes] = useState<ReactNode[]>([]);
     const [addingTask, setAddingTask] = useState<boolean>(false);
-    const [load, setLoad] = useState<boolean>(false);
+    const [numOfTasks, setNumOfTasks] = useState<number>(0);
 
     const cancelAdd = (): void => {
-        updateTaskNodes(taskNodes.filter((e) => {return typeof e !== typeof Task}));
+        setTaskNodes(taskNodes.filter((e) => { return typeof e !== typeof Task }));
         setAddingTask(false);
     };
     const confirmAdd = () => {
-        updateTaskNodes([
+        setTaskNodes([
             <NewTask confirmAdd={confirmAdd} cancelAdd={cancelAdd} />,
             <Task
                 task={{
-                    title:'title',
-                    description:'description',
-                    deadline:3,
-                    state:2,
-                    priority:1
+                    name: 'title',
+                    description: 'description',
+                    deadline: 3,
+                    state: 2,
+                    priority: 1
                 }}
                 onMove={moveTask}
             />,
@@ -34,9 +35,28 @@ const ProjectGroup: React.FC<ProjectGroupProps> = props => {
         ]);
     }
 
+    useEffect(() => {
+        fetch(`http://localhost:8888/api/taskgroup/${props.id}`)
+            .then(response => response.json())
+            .then(response => {
+                setNumOfTasks(response.length)
+                setTaskNodes(response.sort((a: taskType, b: taskType) => {
+                    if (a.priority > b.priority) return -1;
+                    return 1;
+                }).map((e: taskType) => {
+                    return (
+                        <Task
+                            task={e}
+                            onMove={moveTask}
+                        />
+                    );
+                }));
+            });
+    }, []);
+
     const showTaskAdder = () => {
         if (!addingTask) {
-            updateTaskNodes([<NewTask confirmAdd={confirmAdd} cancelAdd={cancelAdd} />, ...taskNodes]);
+            setTaskNodes([<NewTask confirmAdd={confirmAdd} cancelAdd={cancelAdd} />, ...taskNodes]);
             setAddingTask(true);
         }
     };
@@ -44,7 +64,7 @@ const ProjectGroup: React.FC<ProjectGroupProps> = props => {
     const columnheader = (): ReactNode => {
         return (
             <div className="taskname">
-                <span className="taskcount">{ 5 /*props.tasks.length*/}</span>
+                <span className="taskcount">{numOfTasks}</span>
                 {props.name}
                 <div className="dropdown">
                     <button className="inisible task-buttons" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -58,10 +78,10 @@ const ProjectGroup: React.FC<ProjectGroupProps> = props => {
                 <button className="inisible task-buttons mr-2 px-1" onClick={showTaskAdder}>
                     <i className="fas fa-plus"></i>
                 </button>
-                <button className="inisible task-buttons mr-2 px-1" onClick={() => {}}>
+                <button className="inisible task-buttons mr-2 px-1" onClick={() => { }}>
                     <i className="fas fa-angle-right"></i>
                 </button>
-                <button className="inisible task-buttons mr-2 px-1" onClick={() => {}}>
+                <button className="inisible task-buttons mr-2 px-1" onClick={() => { }}>
                     <i className="fas fa-angle-left"></i>
                 </button>
             </div>
@@ -77,7 +97,6 @@ const ProjectGroup: React.FC<ProjectGroupProps> = props => {
     };
 
     // const deleteTask = () => {
-
     // }
 
     const moveTask = (n: number, dir: number) => {
@@ -99,25 +118,6 @@ const ProjectGroup: React.FC<ProjectGroupProps> = props => {
         // loadData();
     };
 
-    const loadData = () => {
-        // updateTaskNodes(props.tasks.sort((a: taskType, b: taskType) => {
-        //     if (a.priority > b.priority) return -1;
-        //     return 1;
-        // }).map((e: taskType) => {
-        //     return (
-        //         <Task
-        //             task={e}
-        //             onMove={moveTask}
-        //         />
-        //     );
-        // }));
-        // setLoad(true);
-    };
-
-    if (!load) {
-        loadData();
-    }
-    
     return (
         <div className="flex-column">
             {columnheader()}
@@ -126,4 +126,4 @@ const ProjectGroup: React.FC<ProjectGroupProps> = props => {
     );
 };
 
-export default ProjectGroup;
+export default TaskGroup;
