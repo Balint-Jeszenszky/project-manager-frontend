@@ -1,6 +1,7 @@
 import React, { ReactNode, useState, useEffect } from 'react';
 import { useRouteMatch } from "react-router-dom";
 import ProjectGroup from './ProjectGroup';
+import NewTaskGroup from './NewTaskGroup';
 import {taskgroupType, taskType} from './DataTypes';
 
 interface ProjectProps {
@@ -10,12 +11,11 @@ interface ProjectProps {
 const Project: React.FC<ProjectProps> = (props) => {
     const [projectGroupNodes, setProjectGroupNodes] = useState<ReactNode[]>([]);
     const [projectGroups, setProjectGroups] = useState<taskgroupType[]>([]);
-    const [tasklist, setTasklist] = useState<taskType[]>([]);
     const [loaded, setLoaded] = useState<boolean>(false);
 
     // i love typescript sooooooooo mutch...
     // const PROJECTID = useRouteMatch().params.id;
-    const PROJECTID = Object.assign({id: 0}, useRouteMatch().params).id;
+    const PROJECTID = parseInt(Object.assign({id: ''}, useRouteMatch().params).id);
 
     const moveGroup = (n: number, dir: number) => {
         setProjectGroupNodes(projectGroups.map((e: taskgroupType) => {
@@ -28,7 +28,6 @@ const Project: React.FC<ProjectProps> = (props) => {
                 <ProjectGroup
                     name={e.name}
                     place={e.place}
-                    onMove={moveGroup}
                 />
             );
         }));
@@ -45,36 +44,26 @@ const Project: React.FC<ProjectProps> = (props) => {
                     <ProjectGroup
                         name={e.name}
                         place={e.place}
-                        onMove={moveGroup}
                         key={`group${e.place}`}
                     />
                 );
             });
             setProjectGroups(response.taskgroups);
-            setTasklist(response.tasks);
             setProjectGroupNodes(groups);
             setLoaded(true);
         });
-    }, []);
+    }, []);//todo trigger for task move to new group
 
-    const addGroup = () => {
-        setProjectGroupNodes([...projectGroupNodes, <ProjectGroup name="Dummy" place={Math.random()} onMove={moveGroup} />]);
+    const addGroup = (group: ReactNode) => {
+        setProjectGroupNodes([...projectGroupNodes, group]);
     }
-
-    const addColumn = () => {
-        return (
-            <div className="add-column">
-                <button className="inisible" onClick={addGroup}>+ Add</button>
-            </div>
-        );
-    };
 
     return (
         <div className="boxrow content">
             <div className="flex-container">
                 {!loaded && 'Loading...'}
                 {loaded && projectGroupNodes}
-                {addColumn()}
+                <NewTaskGroup addGroup={addGroup} projectID={PROJECTID} />
             </div>
         </div>
     );

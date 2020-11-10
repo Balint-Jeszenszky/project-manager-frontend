@@ -6,7 +6,6 @@ import NewTask from './NewTask';
 interface ProjectGroupProps {
     place: number;
     name: string;
-    onMove(n: number, dir: number): void;
 };
 
 const ProjectGroup: React.FC<ProjectGroupProps> = props => {
@@ -59,10 +58,10 @@ const ProjectGroup: React.FC<ProjectGroupProps> = props => {
                 <button className="inisible task-buttons mr-2 px-1" onClick={showTaskAdder}>
                     <i className="fas fa-plus"></i>
                 </button>
-                <button className="inisible task-buttons mr-2 px-1" onClick={() => props.onMove(props.place, 1)}>
+                <button className="inisible task-buttons mr-2 px-1" onClick={() => {}}>
                     <i className="fas fa-angle-right"></i>
                 </button>
-                <button className="inisible task-buttons mr-2 px-1" onClick={() => props.onMove(props.place, -1)}>
+                <button className="inisible task-buttons mr-2 px-1" onClick={() => {}}>
                     <i className="fas fa-angle-left"></i>
                 </button>
             </div>

@@ -15,7 +15,7 @@ const Navbar: React.FC<NavbarProps> = props => {
     }
 
     if (props.loggedIn) {
-        fetch('https://my-json-server.typicode.com/Balint-Jeszenszky/temalab-mock-backend/projects')
+        fetch(`http://localhost:8888/api/projects/${props.userID}`)
         .then(response => response.json())
         .then(response => {
             let projs: ReactNode[] = [];
