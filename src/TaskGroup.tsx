@@ -20,47 +20,61 @@ const TaskGroup: React.FC<TaskGroupProps> = props => {
     const [numOfTasks, setNumOfTasks] = useState<number>(0);
 
     const cancelAdd = (): void => {
-        setTaskNodes(taskNodes.filter((e) => { return typeof e !== typeof Task }));
+        // setTaskNodes(taskNodes.filter((e, i) => i !== 0));
+        update();
         setAddingTask(false);
     };
-    const confirmAdd = (title: string, desc: string, deadline: string, priority: number) => {
+    const confirmAdd = (task: taskType) => {
+        setNumOfTasks(numOfTasks + 1);
         setTaskNodes([
-            <NewTask groupID={props.id} confirmAdd={confirmAdd} cancelAdd={cancelAdd} />,
-            <Task
+            (<NewTask key={`newtask${props.id}`} groupID={props.id} numberOfTasks={numOfTasks} confirmAdd={confirmAdd} cancelAdd={cancelAdd} />),
+            (<Task
+                update={update}
+                updateAll={props.update}
+                projectID={props.projectID}
+                key={`task${task.id}`}
                 task={{
-                    name: title,
-                    description: desc,
-                    deadline: deadline,
-                    priority: priority
+                    id: task.id,
+                    taskgroupID: props.id,
+                    name: task.name,
+                    description: task.description,
+                    deadline: task.deadline,
+                    priority: task.priority
                 }}
-                onMove={moveTask}
-            />,
+            />),
             ...taskNodes
         ]);
     };
 
-    useEffect(() => {
+    const update = () => {
         fetch(`http://localhost:8888/api/tasks/group/${props.id}`)
-            .then(response => response.json())
-            .then(response => {
-                setNumOfTasks(response.length)
-                setTaskNodes(response.sort((a: taskType, b: taskType) => {
-                    if (a.priority > b.priority) return -1;
-                    return 1;
-                }).map((e: taskType) => {
-                    return (
-                        <Task
-                            task={e}
-                            onMove={moveTask}
-                        />
-                    );
-                }));
-            });
+        .then(response => response.json())
+        .then(response => {
+            setNumOfTasks(response.length)
+            setTaskNodes(response.sort((a: taskType, b: taskType) => {
+                if (a.priority > b.priority) return -1;
+                return 1;
+            }).map((e: taskType) => {
+                return (
+                    <Task
+                        update={update}
+                        updateAll={props.update}
+                        projectID={props.projectID}
+                        key={`task${e.id}`}
+                        task={e}
+                    />
+                );
+            }));
+        });
+    };
+
+    useEffect(() => {
+        update();
     }, []);
 
     const showTaskAdder = () => {
         if (!addingTask) {
-            setTaskNodes([<NewTask groupID={props.id} confirmAdd={confirmAdd} cancelAdd={cancelAdd} />, ...taskNodes]);
+            setTaskNodes([(<NewTask key={`newtask${props.id}`} groupID={props.id} numberOfTasks={numOfTasks} confirmAdd={confirmAdd} cancelAdd={cancelAdd} />), ...taskNodes]);
             setAddingTask(true);
         }
     };
@@ -124,7 +138,7 @@ const TaskGroup: React.FC<TaskGroupProps> = props => {
                 priority: props.priority + dir
             }),
         }).then(props.update);
-    }
+    };
 
     const columnheader = (): ReactNode => {
         return (
@@ -176,28 +190,6 @@ const TaskGroup: React.FC<TaskGroupProps> = props => {
                 {taskNodes}
             </div>
         );
-    };
-
-    // const deleteTask = () => {
-    // }
-
-    const moveTask = (id: number, dir: number) => {
-        // updateTaskNodes(props.tasks.map((t: taskType) => {
-        //     if (t.priority === n) {
-        //         t.priority += dir;
-        //     } else if ((t.priority > n && dir === 1) || (t.priority < n && dir === -1)) {
-        //         t.priority -= dir;
-        //     }
-        //     return (
-        //         <Task
-        //             task={t}
-        //             onMove={moveTask}
-        //             key={t.title}
-        //         />
-        //     );
-        // }));
-        // setLoad(false);
-        // loadData();
     };
 
     return (

@@ -11,6 +11,8 @@ export type taskgroupType = {
 };
 
 export type taskType = {
+    id: number,
+    taskgroupID: number,
     name: string,
     description: string,
     deadline: string,

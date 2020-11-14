@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
+import { taskType } from './DataTypes';
 
 interface NewTaskProps {
     groupID: number;
-    confirmAdd(title: string, desc: string, deadline: string, priority: number): void;
+    numberOfTasks: number;
+    confirmAdd(task: taskType): void;
     cancelAdd(): void;
 }
 
@@ -17,9 +19,12 @@ const NewTask: React.FC<NewTaskProps> = (props) => {
     const onDescChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setDesc(e.target.value);
     }
+    const onDatetimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setDeadline(e.target.value);
+    }
 
     const confirmAdd = () =>{
-        if (name.length === 0) return;
+        if (name.length === 0 && deadline !== '') return;
         fetch('http://localhost:8888/api/tasks', {
             method: 'POST',
             cache: 'no-cache',
@@ -32,12 +37,12 @@ const NewTask: React.FC<NewTaskProps> = (props) => {
                 TaskgroupID: props.groupID,
                 Name: name,
                 Description: desc,
-                Priority: 2,
+                Priority: props.numberOfTasks + 1,
                 Deadline: deadline
             }),
         })
         .then(response => response.json())
-        .then(response => props.confirmAdd(name, desc, deadline, 2/*priority*/));
+        .then(response => props.confirmAdd({id: response.id, taskgroupID: props.groupID, name, description: desc, deadline, priority: props.numberOfTasks + 1}));
     }
 
     return (
@@ -50,8 +55,8 @@ const NewTask: React.FC<NewTaskProps> = (props) => {
                 onChange={onNameChange}
             />
             <textarea placeholder="Enter a note" value={desc} onChange={onDescChange}></textarea>
-            <input type="datetime-local" className="form-control-sm taskdetail mb-1" />
-            <button className={'btn btn-success btn-sm button-add-or-cancel' + (name.length > 0 ? '' : ' disabled')} onClick={confirmAdd}>Add</button>
+            <input type="datetime-local" className="form-control-sm taskdetail mb-1" onChange={onDatetimeChange} />
+            <button className={'btn btn-success btn-sm button-add-or-cancel' + (name.length > 0 && deadline !== '' ? '' : ' disabled')} onClick={confirmAdd}>Add</button>
             <button className="btn btn-light btn-sm button-cancel button-add-or-cancel" onClick={props.cancelAdd}>Cancel</button>
         </div>
     );

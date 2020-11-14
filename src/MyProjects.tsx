@@ -23,7 +23,7 @@ const MyProjects: React.FC<MyProjectsProps> = (props) => {
             setProjects(projs);
             setLoaded(true);
         });
-    }, [loaded]);
+    }, [loaded, props.userID]);
 
     const updateProjects = () => {
         setLoaded(false);

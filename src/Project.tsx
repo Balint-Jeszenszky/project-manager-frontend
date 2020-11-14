@@ -20,7 +20,6 @@ const Project: React.FC<ProjectProps> = (props) => {
         fetch(`http://localhost:8888/api/taskgroup/groups/${PROJECTID}`)
         .then(response => response.json())
         .then(response => {
-            console.log(42);
             setTaskGroupNodes(response.sort((a: taskType, b: taskType) => {
                 if (a.priority > b.priority) return 1;
                 return -1;

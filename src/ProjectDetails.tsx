@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { projectType } from './DataTypes';
 import { Link } from 'react-router-dom';
 
 interface ProjectDetailsProps {

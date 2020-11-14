@@ -5,7 +5,6 @@ import Project from './Project';
 import MyProjects from './MyProjects';
 import Profile from './Profile';
 import Logout from './Logout';
-import {projectType} from './DataTypes';
 
 interface ContentProps {
     loggedIn: boolean;

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import Content from './Content';
 import './App.css';
-import {projectType} from './DataTypes';
 
 const App: React.FC = () => {
     const [loggedIn, setLoggedin] = useState<boolean>(false);
