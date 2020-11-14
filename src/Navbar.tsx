@@ -15,7 +15,7 @@ const Navbar: React.FC<NavbarProps> = props => {
     }
 
     if (props.loggedIn) {
-        fetch(`http://localhost:8888/api/projects/${props.userID}`)
+        fetch(`http://localhost:8888/api/project/projects/${props.userID}`)
         .then(response => response.json())
         .then(response => {
             let projs: ReactNode[] = [];

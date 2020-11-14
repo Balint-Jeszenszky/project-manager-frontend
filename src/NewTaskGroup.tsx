@@ -2,8 +2,10 @@ import React, { useState, ReactNode } from 'react';
 import TaskGroup from './TaskGroup';
 
 interface NewTaskGroupProps {
-    addGroup(group: ReactNode): void;
     projectID: number;
+    numberOfGroups: number;
+    addGroup(group: ReactNode): void;
+    update(): void;
 };
 
 const NewTaskGroup: React.FC<NewTaskGroupProps> = props => {
@@ -12,6 +14,11 @@ const NewTaskGroup: React.FC<NewTaskGroupProps> = props => {
 
     const onNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setName(e.target.value);
+    }
+
+    const cancelAdd = () => {
+        setAdding(false);
+        setName('');
     }
 
     const addGroup = () =>{
@@ -24,10 +31,13 @@ const NewTaskGroup: React.FC<NewTaskGroupProps> = props => {
                 'Content-Type': 'application/json'
             },
             redirect: 'follow',
-            body: JSON.stringify({ProjectID: props.projectID, Name: name, Priority: 5}),
+            body: JSON.stringify({ProjectID: props.projectID, Name: name, Priority: props.numberOfGroups + 1}),
         })
         .then(response => response.json())
-        .then(response => props.addGroup(<TaskGroup id={response.id} place={5} name={name} />));
+        .then(response => {
+            props.addGroup(<TaskGroup id={response.id} projectID={props.projectID} priority={5} name={name} update={props.update}/>);
+            setName('');
+        });
     }
 
     return (
@@ -42,6 +52,10 @@ const NewTaskGroup: React.FC<NewTaskGroupProps> = props => {
             }
             { adding && <button className="btn btn-success" onClick={addGroup}>
                             <i className="fas fa-check"></i>
+                        </button>
+            }
+            { adding && <button className="btn btn-danger" onClick={cancelAdd}>
+                            <i className="fas fa-times"></i>
                         </button>
             }
             { !adding && <button className="inisible" onClick={() => setAdding(true)}>+ Add</button> }

@@ -16,8 +16,8 @@ const Task: React.FC<TaskProps> = props => {
     return (
         <div className="task" key={props.task.name}>
             <div className="title">
-                {/* {!editing && props.task.name} */}
-                {editing && props.task.name}
+                {/* {editing && props.task.name} */}
+                {!editing && props.task.name}
                 <div className="dropdown">
                     <button className="inisible task-buttons" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i className="fas fa-ellipsis-h"></i>

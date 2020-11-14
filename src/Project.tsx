@@ -9,62 +9,49 @@ interface ProjectProps {
 }
 
 const Project: React.FC<ProjectProps> = (props) => {
-    const [projectGroupNodes, setProjectGroupNodes] = useState<ReactNode[]>([]);
-    const [projectGroups, setProjectGroups] = useState<taskgroupType[]>([]);
+    const [taskGroupNodes, setTaskGroupNodes] = useState<ReactNode[]>([]);
     const [loaded, setLoaded] = useState<boolean>(false);
 
     // i love typescript sooooooooo mutch...
     // const PROJECTID = useRouteMatch().params.id;
     const PROJECTID = parseInt(Object.assign({id: ''}, useRouteMatch().params).id);
 
-    // const moveGroup = (n: number, dir: number) => {
-    //     setProjectGroupNodes(projectGroups.map((e: taskgroupType) => {
-    //         if (e.place === n) {
-    //             e.place += dir;
-    //         } else if ((e.place > n && dir === 1) || (e.place < n && dir === -1)) {
-    //             e.place -= dir;
-    //         }
-    //         return (
-    //             <TaskGroup
-    //                 name={e.name}
-    //                 place={e.place}
-    //             />
-    //         );
-    //     }));
-    //     setLoaded(false);
-    // };
-
-    useEffect(() => {
-        fetch(`http://localhost:8888/api/project/${PROJECTID}`)
+    const update = () => {
+        fetch(`http://localhost:8888/api/taskgroup/groups/${PROJECTID}`)
         .then(response => response.json())
         .then(response => {
-            let groups: ReactNode[] = [];
-            response.forEach((e: taskgroupType) => {
-                groups.push(
+            console.log(42);
+            setTaskGroupNodes(response.sort((a: taskType, b: taskType) => {
+                if (a.priority > b.priority) return 1;
+                return -1;
+            }).map((e: taskgroupType) => {
+                return (
                     <TaskGroup
                         name={e.name}
-                        place={e.place}
+                        priority={e.priority}
                         id={e.id}
-                        key={`group${e.place}`}
+                        projectID={PROJECTID}
+                        key={`group${e.id}`}
+                        update={update}
                     />
                 );
-            });
-            setProjectGroups(response.taskgroups);
-            setProjectGroupNodes(groups);
+            }));
             setLoaded(true);
         });
-    }, []);//todo trigger for task move to new group
+    }
+
+    useEffect(update, []);
 
     const addGroup = (group: ReactNode) => {
-        setProjectGroupNodes([...projectGroupNodes, group]);
+        setTaskGroupNodes([...taskGroupNodes, group]);
     }
 
     return (
         <div className="boxrow content">
             <div className="flex-container">
                 {!loaded && 'Loading...'}
-                {loaded && projectGroupNodes}
-                <NewTaskGroup addGroup={addGroup} projectID={PROJECTID} />
+                {loaded && taskGroupNodes}
+                <NewTaskGroup addGroup={addGroup} projectID={PROJECTID} update={update} numberOfGroups={taskGroupNodes.length} />
             </div>
         </div>
     );

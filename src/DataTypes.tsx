@@ -5,7 +5,7 @@ export type projectType = {
 };
 
 export type taskgroupType = {
-    place: number,
+    priority: number,
     name: string,
     id: number
 };
@@ -13,7 +13,6 @@ export type taskgroupType = {
 export type taskType = {
     name: string,
     description: string,
-    deadline: number,
-    state: number,
+    deadline: string,
     priority: number
 };

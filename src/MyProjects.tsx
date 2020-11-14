@@ -11,18 +11,14 @@ const MyProjects: React.FC<MyProjectsProps> = (props) => {
     const [projects, setProjects] = useState<ReactNode[]>([]);
     const [loaded, setLoaded] = useState<boolean>(false);
     const [addingProject, setAddingProject] = useState<boolean>(false);
-
-    const deleteProject = (id: number): void => {
-        setProjects(projects.filter((e, i) => i !== id));
-    };
-
+    
     useEffect(() => {
-        fetch(`http://localhost:8888/api/projects/${props.userID}`)
+        fetch(`http://localhost:8888/api/project/projects/${props.userID}`)
         .then(response => response.json())
         .then(response => {
             let projs: ReactNode[] = [];
             response.forEach((e: projectType, i: number) => {
-                projs.push(<ProjectDetails id={e.id} name={e.name} desc={e.description} updateProjects={updateProjects} />);
+                projs.push(<ProjectDetails id={e.id} name={e.name} desc={e.description} updateProjects={updateProjects} key={`projects/${e.id}`} />);
             });
             setProjects(projs);
             setLoaded(true);

@@ -16,7 +16,7 @@ const NewProject: React.FC<NewProjectProps> = props => {
     }
 
     const addProject = () =>{
-        fetch('http://localhost:8888/api/projects', {
+        fetch('http://localhost:8888/api/project', {
             method: 'POST',
             cache: 'no-cache',
             headers: {

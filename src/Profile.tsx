@@ -37,7 +37,6 @@ const Profile: React.FC = () => {
     const save = () =>{
         fetch('http://localhost:8888/api/user', {
             method: 'PATCH',
-            mode: 'no-cors',
             cache: 'no-cache',
             headers: {
                 'Accept': 'application/json',
@@ -50,7 +49,6 @@ const Profile: React.FC = () => {
     const del = () =>{
         fetch('http://localhost:8888/api/user', {
             method: 'DELETE',
-            mode: 'no-cors',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'

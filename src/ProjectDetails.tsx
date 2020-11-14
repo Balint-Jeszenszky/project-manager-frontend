@@ -15,7 +15,7 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = props => {
     const [editing, setEditing] = useState<boolean>(false);
 
     const deleteProject = () => {
-        fetch(`http://localhost:8888/api/projects/${props.id}`, {
+        fetch(`http://localhost:8888/api/project/${props.id}`, {
             method: 'DELETE',
             redirect: 'follow'
         }).then(() => props.updateProjects());
@@ -29,7 +29,7 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = props => {
     }
     const edit = () => {
         setEditing(false);
-        fetch(`http://localhost:8888/api/projects/${props.id}`, {
+        fetch(`http://localhost:8888/api/project/${props.id}`, {
             method: 'PUT',
             cache: 'no-cache',
             headers: {
