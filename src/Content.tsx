@@ -10,6 +10,7 @@ interface ContentProps {
     loggedIn: boolean;
     userID: number;
     setLoggedin(param: boolean): void;
+    setUserID(id: number): void;
 }
 
 const Content: React.FC<ContentProps> = props => {
@@ -19,7 +20,7 @@ const Content: React.FC<ContentProps> = props => {
                 {props.loggedIn ? <Redirect to="/projects" /> : <Redirect to="/auth" />}
             </Route>
             <Route exact path="/auth">
-                {props.loggedIn ? <Redirect to="/projects" /> : <Auth setLoggedin={props.setLoggedin} />}
+                {props.loggedIn ? <Redirect to="/projects" /> : <Auth setLoggedin={props.setLoggedin} setUserID={props.setUserID} />}
             </Route>
             <Route exact path="/projects">
                 {props.loggedIn ? <MyProjects userID={props.userID} /> : <Redirect to="/auth" />}

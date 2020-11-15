@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 
 const Profile: React.FC = () => {
     const [loaded, setLoaded] = useState<boolean>(false);
+    const [username, setUsername] = useState<string>('');
     const [name, setName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [oldpass, setOldpass] = useState<string>('');
@@ -12,6 +13,7 @@ const Profile: React.FC = () => {
         fetch('http://localhost:8888/api/user/1')
         .then(response => response.json())
         .then(response => {
+            setUsername(response.username);
             setName(response.name);
             setEmail(response.email);
             setLoaded(true);
@@ -35,8 +37,8 @@ const Profile: React.FC = () => {
     }
 
     const save = () =>{
-        fetch('http://localhost:8888/api/user', {
-            method: 'PATCH',
+        fetch('http://localhost:8888/api/user/${userID}', {
+            method: 'PUT',
             cache: 'no-cache',
             headers: {
                 'Accept': 'application/json',
@@ -47,7 +49,7 @@ const Profile: React.FC = () => {
         }).then();
     }
     const del = () =>{
-        fetch('http://localhost:8888/api/user', {
+        fetch('http://localhost:8888/api/user/${userID}', {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
@@ -65,12 +67,21 @@ const Profile: React.FC = () => {
                     <table className="table table-borderless">
                         <tbody>
                             <tr>
+                                <td className="align-middle"><label htmlFor="name_input">Username:</label></td>
+                                <td><input
+                                    type="text"
+                                    className="form-control"
+                                    id="name_input"
+                                    value={username}
+                                    disabled
+                                /></td>
+                            </tr>
+                            <tr>
                                 <td className="align-middle"><label htmlFor="name_input">Name:</label></td>
                                 <td><input
                                     type="text"
                                     className="form-control"
                                     id="name_input"
-                                    name="name"
                                     value={name}
                                     onChange={onNameChange}
                                 /></td>
@@ -80,8 +91,7 @@ const Profile: React.FC = () => {
                                 <td><input
                                     type="email"
                                     className="form-control" 
-                                    id="email_input" 
-                                    name="email" 
+                                    id="email_input"
                                     value={email}
                                     onChange={onEmailChange}
                                 /></td>
@@ -92,7 +102,6 @@ const Profile: React.FC = () => {
                                     type="password"
                                     className="form-control"
                                     id="old_pass_input"
-                                    name="old_password"
                                     placeholder="••••••••"
                                     value={oldpass} 
                                     onChange={onOldPassChange}
@@ -104,7 +113,6 @@ const Profile: React.FC = () => {
                                     type="password"
                                     className="form-control"
                                     id="new_pass_input"
-                                    name="new_password"
                                     value={newPass} 
                                     onChange={onNewPassChange}
                                 /></td>
@@ -115,7 +123,6 @@ const Profile: React.FC = () => {
                                     type="password"
                                     className="form-control"
                                     id="new_pass_confirm"
-                                    name="new_password_confirm"
                                     value={confirmPass} 
                                     onChange={onConfirmPassChange}
                                 /></td>

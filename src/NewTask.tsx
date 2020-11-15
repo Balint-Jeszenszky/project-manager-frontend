@@ -12,6 +12,7 @@ const NewTask: React.FC<NewTaskProps> = (props) => {
     const [name, setName] = useState<string>('');
     const [desc, setDesc] = useState<string>('');
     const [deadline, setDeadline] = useState<string>('');
+    const [priority, setPriority] = useState<number>(props.numberOfTasks + 1);
 
     const onNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setName(e.target.value);
@@ -37,12 +38,15 @@ const NewTask: React.FC<NewTaskProps> = (props) => {
                 TaskgroupID: props.groupID,
                 Name: name,
                 Description: desc,
-                Priority: props.numberOfTasks + 1,
+                Priority: priority,
                 Deadline: deadline
             }),
         })
         .then(response => response.json())
-        .then(response => props.confirmAdd({id: response.id, taskgroupID: props.groupID, name, description: desc, deadline, priority: props.numberOfTasks + 1}));
+        .then(response => {
+            props.confirmAdd({id: response.id, taskgroupID: props.groupID, name, description: desc, deadline, priority: priority});
+            setPriority(priority + 1);
+        });
     }
 
     return (

@@ -17,6 +17,7 @@ const Project: React.FC<ProjectProps> = (props) => {
     const PROJECTID = parseInt(Object.assign({id: ''}, useRouteMatch().params).id);
 
     const update = () => {
+        setTaskGroupNodes([]);
         fetch(`http://localhost:8888/api/taskgroup/groups/${PROJECTID}`)
         .then(response => response.json())
         .then(response => {

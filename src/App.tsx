@@ -32,6 +32,7 @@ const App: React.FC = () => {
                     <Content
                         loggedIn={loggedIn}
                         setLoggedin={setLoggedin}
+                        setUserID={setUserID}
                         userID={userID}
                     />
                 </div>
