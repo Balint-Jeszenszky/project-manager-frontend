@@ -27,7 +27,6 @@ const TaskGroup: React.FC<TaskGroupProps> = props => {
     const confirmAdd = (task: taskType) => {
         setNumOfTasks(numOfTasks + 1);
         setTaskNodes([
-            (<NewTask key={`newtask${props.id}`} groupID={props.id} numberOfTasks={numOfTasks} confirmAdd={confirmAdd} cancelAdd={cancelAdd} />),
             (<Task
                 update={update}
                 updateAll={props.update}
@@ -74,7 +73,6 @@ const TaskGroup: React.FC<TaskGroupProps> = props => {
 
     const showTaskAdder = () => {
         if (!addingTask) {
-            setTaskNodes([(<NewTask key={`newtask${props.id}`} groupID={props.id} numberOfTasks={numOfTasks} confirmAdd={confirmAdd} cancelAdd={cancelAdd} />), ...taskNodes]);
             setAddingTask(true);
         }
     };
@@ -140,10 +138,10 @@ const TaskGroup: React.FC<TaskGroupProps> = props => {
         }).then(props.update);
     };
 
-    const columnheader = (): ReactNode => {
-        return (
+    return (
+        <div className="flex-column">
             <div className="taskname">
-                <span className="taskcount">{numOfTasks}</span>
+            {!editiongGroup && <span className="taskcount">{numOfTasks}</span>}
                 {!editiongGroup && groupName}
                 { editiongGroup &&
                         <input
@@ -154,15 +152,15 @@ const TaskGroup: React.FC<TaskGroupProps> = props => {
                             value={groupName}
                         />
                 }
-                { editiongGroup && <button className="btn btn-success" onClick={saveGroup}>
+                { editiongGroup && <button className="btn btn-success mt-1" onClick={saveGroup}>
                             <i className="fas fa-check"></i>
                         </button>
                 }
-                { editiongGroup && <button className="btn btn-danger" onClick={cancelEdit}>
+                { editiongGroup && <button className="btn btn-danger mt-1" onClick={cancelEdit}>
                             <i className="fas fa-times"></i>
                         </button>
                 }
-                <div className="dropdown">
+                {!editiongGroup && <div className="dropdown">
                     <button className="inisible task-buttons" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i className="fas fa-ellipsis-h"></i>
                     </button>
@@ -170,32 +168,21 @@ const TaskGroup: React.FC<TaskGroupProps> = props => {
                         <button className="dropdown-item" type="button" onClick={editGroup}>Edit</button>
                         <button className="dropdown-item" type="button" onClick={deleteGroup}>Delete</button>
                     </div>
-                </div>
-                <button className="inisible task-buttons mr-2 px-1" onClick={showTaskAdder}>
+                </div>}
+                {!editiongGroup && <button className="inisible task-buttons mr-2 px-1" onClick={showTaskAdder}>
                     <i className="fas fa-plus"></i>
-                </button>
-                <button className="inisible task-buttons mr-2 px-1" onClick={() => { moveGroup(1) }}>
+                </button>}
+                {!editiongGroup && <button className="inisible task-buttons mr-2 px-1" onClick={() => { moveGroup(1) }}>
                     <i className="fas fa-angle-right"></i>
-                </button>
-                <button className="inisible task-buttons mr-2 px-1" onClick={() => { moveGroup(-1) }}>
+                </button>}
+                {!editiongGroup && <button className="inisible task-buttons mr-2 px-1" onClick={() => { moveGroup(-1) }}>
                     <i className="fas fa-angle-left"></i>
-                </button>
+                </button>}
             </div>
-        );
-    };
-
-    const columncontent = (): ReactNode => {
-        return (
             <div className="tasklist">
+                {addingTask && <NewTask key={`newtask${props.id}`} groupID={props.id} numberOfTasks={numOfTasks} confirmAdd={confirmAdd} cancelAdd={cancelAdd} />}
                 {taskNodes}
             </div>
-        );
-    };
-
-    return (
-        <div className="flex-column">
-            {columnheader()}
-            {columncontent()}
         </div>
     );
 };

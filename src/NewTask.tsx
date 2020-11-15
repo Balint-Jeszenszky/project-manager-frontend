@@ -46,6 +46,9 @@ const NewTask: React.FC<NewTaskProps> = (props) => {
         .then(response => {
             props.confirmAdd({id: response.id, taskgroupID: props.groupID, name, description: desc, deadline, priority: priority});
             setPriority(priority + 1);
+            setName('');
+            setDesc('');
+            setDeadline('');
         });
     }
 
@@ -59,7 +62,7 @@ const NewTask: React.FC<NewTaskProps> = (props) => {
                 onChange={onNameChange}
             />
             <textarea placeholder="Enter a note" value={desc} onChange={onDescChange}></textarea>
-            <input type="datetime-local" className="form-control-sm taskdetail mb-1" onChange={onDatetimeChange} />
+            <input type="datetime-local" className="form-control-sm taskdetail mb-1" value={deadline} onChange={onDatetimeChange} />
             <button className={'btn btn-success btn-sm button-add-or-cancel' + (name.length > 0 && deadline !== '' ? '' : ' disabled')} onClick={confirmAdd}>Add</button>
             <button className="btn btn-light btn-sm button-cancel button-add-or-cancel" onClick={props.cancelAdd}>Cancel</button>
         </div>

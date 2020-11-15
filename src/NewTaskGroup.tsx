@@ -35,7 +35,7 @@ const NewTaskGroup: React.FC<NewTaskGroupProps> = props => {
         })
         .then(response => response.json())
         .then(response => {
-            props.addGroup(<TaskGroup id={response.id} projectID={props.projectID} priority={5} name={name} update={props.update}/>);
+            props.addGroup(<TaskGroup  key={`group${response.id}`} id={response.id} projectID={props.projectID} priority={5} name={name} update={props.update}/>);
             setName('');
         });
     }
