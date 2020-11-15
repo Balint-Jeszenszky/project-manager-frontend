@@ -21,6 +21,10 @@ const Register: React.FC = () => {
     }
 
     const register = () => {
+        if (email === '' || name === '' || username === '' || password === '') {
+            return;
+        }
+        
         fetch('http://localhost:8888/api/user/register', {
             method: 'POST',
             cache: 'no-cache',

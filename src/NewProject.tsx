@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 
 interface NewProjectProps {
+    userID: number;
     updateProjects(): void;
 };
 
@@ -24,7 +25,7 @@ const NewProject: React.FC<NewProjectProps> = props => {
                 'Content-Type': 'application/json'
             },
             redirect: 'follow',
-            body: JSON.stringify({userID: 1, name: projectName, description: projectDescription}),
+            body: JSON.stringify({userID: props.userID, name: projectName, description: projectDescription}),
         }).then(() => props.updateProjects());
     }
 

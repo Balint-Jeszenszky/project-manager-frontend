@@ -34,7 +34,7 @@ const MyProjects: React.FC<MyProjectsProps> = (props) => {
         <div className="container">
             <div className="mt-2 mt-md-3 mt-lg-4 text-right">
                 <button className="btn btn-success btn-sm" onClick={() => setAddingProject(true)}>New project</button>
-                {addingProject && <NewProject updateProjects={updateProjects} />}
+                {addingProject && <NewProject userID={props.userID} updateProjects={updateProjects} />}
             </div>
             <table className="table mt-2 table-hover projects">
                 <thead>

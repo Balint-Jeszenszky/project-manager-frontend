@@ -1,6 +1,10 @@
 import React, {useState, useEffect} from 'react';
 
-const Profile: React.FC = () => {
+interface ProfileProps {
+    userID: number;
+}
+
+const Profile: React.FC<ProfileProps> = (props) => {
     const [loaded, setLoaded] = useState<boolean>(false);
     const [username, setUsername] = useState<string>('');
     const [name, setName] = useState<string>('');
@@ -10,7 +14,7 @@ const Profile: React.FC = () => {
     const [confirmPass, setConfirmPass] = useState<string>('');
 
     useEffect(() => {
-        fetch('http://localhost:8888/api/user/1')
+        fetch(`http://localhost:8888/api/user/${props.userID}`)
         .then(response => response.json())
         .then(response => {
             setUsername(response.username);
@@ -37,7 +41,7 @@ const Profile: React.FC = () => {
     }
 
     const save = () =>{
-        fetch('http://localhost:8888/api/user/${userID}', {
+        fetch(`http://localhost:8888/api/user/${props.userID}`, {
             method: 'PUT',
             cache: 'no-cache',
             headers: {
@@ -49,7 +53,7 @@ const Profile: React.FC = () => {
         }).then();
     }
     const del = () =>{
-        fetch('http://localhost:8888/api/user/${userID}', {
+        fetch(`http://localhost:8888/api/user/${props.userID}`, {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
@@ -71,7 +75,7 @@ const Profile: React.FC = () => {
                                 <td><input
                                     type="text"
                                     className="form-control"
-                                    id="name_input"
+                                    id="username_input"
                                     value={username}
                                     disabled
                                 /></td>

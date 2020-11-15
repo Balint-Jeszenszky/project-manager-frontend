@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
 
 interface LoginProps {
     setLoggedin(params: boolean): void;
@@ -33,8 +32,14 @@ const Login: React.FC<LoginProps> = props => {
             }),
         })
         .then(response => response.json())
-        .then(response => props.setUserID(response.id))
-        .catch(() => setWronCredentials(true));
+        .then(response => {
+            if (response.status === 401) {
+                setWronCredentials(true)
+            } else {
+                props.setUserID(response.id);
+                props.setLoggedin(true);
+            }
+        });
     } 
 
     return (
@@ -43,22 +48,22 @@ const Login: React.FC<LoginProps> = props => {
             {wronCredentials && <p className="text-danger text-center">Wrong credentials</p>}
             <form>
                 <div className="form-group">
-                    <input type="email" className="form-control" placeholder="Username" onChange={onUsernameChange} />
+                    <input type="text" className="form-control" placeholder="Username" onChange={onUsernameChange} />
                 </div>
                 <div className="form-group">
                     <input type="password" className="form-control" placeholder="Password" onChange={onPassChange} />
                 </div>
                 <div className="text-center form-group">
-                    <button className="btn btn-link">Forgot password</button>
+                    <button type="button" className="btn btn-link">Forgot password</button>
                 </div>
                 <div className="text-center form-group">
                     <input className="form-check-input" type="checkbox" value="" id="stayloggedin" />
-                        <label className="form-check-label" htmlFor="stayloggedin">
-                            Stay logged in
-                        </label>
+                    <label className="form-check-label" htmlFor="stayloggedin">
+                        Stay logged in
+                    </label>
                 </div>
                 <div className="text-center form-group">
-                    <Link className="btn btn-primary" to="/projects" onClick={() => props.setLoggedin(true)}>Login</Link>
+                    <button type="button" className="btn btn-primary" onClick={login}>Login</button>
                 </div>
             </form>
         </div>

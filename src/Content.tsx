@@ -29,7 +29,7 @@ const Content: React.FC<ContentProps> = props => {
                 {props.loggedIn ? <Project userID={props.userID} /> : <Redirect to="/auth" />}
             </Route>
             <Route exact path="/profile">
-                {props.loggedIn ? <Profile /> : <Redirect to="/auth" />}
+                {props.loggedIn ? <Profile userID={props.userID} /> : <Redirect to="/auth" />}
             </Route>
 
 
