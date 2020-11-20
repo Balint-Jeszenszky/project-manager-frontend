@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import { taskType } from './DataTypes';
 
 interface TaskProps {
@@ -10,6 +10,7 @@ interface TaskProps {
 
 const Task: React.FC<TaskProps> = props => {
     const [editing, setEditing] = useState<boolean>(false);
+    const [loaded, setLoaded] = useState<boolean>(false);
     const [name, setName] = useState<string>(props.task.name);
     const [oldName, setOldName] = useState<string>(props.task.name);
     const [desc, setDesc] = useState<string>(props.task.description);
@@ -17,7 +18,7 @@ const Task: React.FC<TaskProps> = props => {
     const [taskGroupOptions, setTaskGroupOptions] = useState<{id: number, name: string}[]>([]);
     const [taskGroupID, setTaskGroupID] = useState<number>(props.task.taskgroupID);
 
-    useEffect(() => {
+    if (!loaded) {
         fetch(`http://localhost:8888/api/taskgroup/groups/${props.projectID}`)
         .then(response => response.json())
         .then(response => {
@@ -25,7 +26,8 @@ const Task: React.FC<TaskProps> = props => {
                 return {id: e.id, name: e.name};
             }));
         });
-    }, []);
+        setLoaded(true);
+    }
 
     const deadlineDate = new Date(deadline);
 

@@ -17,11 +17,10 @@ const Project: React.FC<ProjectProps> = (props) => {
     const PROJECTID = parseInt(Object.assign({id: ''}, useRouteMatch().params).id);
 
     const update = () => {
-        setTaskGroupNodes([]);
         fetch(`http://localhost:8888/api/taskgroup/groups/${PROJECTID}`)
         .then(response => response.json())
         .then(response => {
-            setTaskGroupNodes(response.sort((a: taskType, b: taskType) => {
+            const newNodes = response.sort((a: taskType, b: taskType) => {
                 if (a.priority > b.priority) return 1;
                 return -1;
             }).map((e: taskgroupType) => {
@@ -35,7 +34,8 @@ const Project: React.FC<ProjectProps> = (props) => {
                         update={update}
                     />
                 );
-            }));
+            });
+            setTaskGroupNodes(newNodes);
             setLoaded(true);
         });
     }

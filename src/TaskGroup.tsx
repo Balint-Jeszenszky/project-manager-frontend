@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ReactNode } from 'react';
+import React, { useState, ReactNode } from 'react';
 import { taskType } from './DataTypes';
 import Task from './Task';
 import NewTask from './NewTask';
@@ -14,13 +14,13 @@ interface TaskGroupProps {
 const TaskGroup: React.FC<TaskGroupProps> = props => {
     const [taskNodes, setTaskNodes] = useState<ReactNode[]>([]);
     const [addingTask, setAddingTask] = useState<boolean>(false);
+    const [loaded, setLoaded] = useState<boolean>(false);
     const [editiongGroup, setEditiongGroup] = useState<boolean>(false);
     const [groupName, setGroupName] = useState<string>(props.name);
     const [oldGroupName, setOldGroupName] = useState<string>(props.name);
     const [numOfTasks, setNumOfTasks] = useState<number>(0);
 
     const cancelAdd = (): void => {
-        // setTaskNodes(taskNodes.filter((e, i) => i !== 0));
         update();
         setAddingTask(false);
     };
@@ -67,9 +67,10 @@ const TaskGroup: React.FC<TaskGroupProps> = props => {
         });
     };
 
-    useEffect(() => {
+    if (!loaded) {
         update();
-    }, []);
+        setLoaded(true);
+    }
 
     const showTaskAdder = () => {
         if (!addingTask) {

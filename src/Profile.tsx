@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
+import {Redirect} from 'react-router-dom';
 
 interface ProfileProps {
     userID: number;
@@ -12,8 +13,9 @@ const Profile: React.FC<ProfileProps> = (props) => {
     const [oldpass, setOldpass] = useState<string>('');
     const [newPass, setNewPass] = useState<string>('');
     const [confirmPass, setConfirmPass] = useState<string>('');
+    const [changesSaved, setChangesSaved] = useState<boolean>(false);
 
-    useEffect(() => {
+    if (!loaded) {
         fetch(`http://localhost:8888/api/user/${props.userID}`)
         .then(response => response.json())
         .then(response => {
@@ -22,7 +24,7 @@ const Profile: React.FC<ProfileProps> = (props) => {
             setEmail(response.email);
             setLoaded(true);
         });
-    }, [loaded]);
+    }
 
     const onNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setName(e.target.value);
@@ -49,8 +51,8 @@ const Profile: React.FC<ProfileProps> = (props) => {
                 'Content-Type': 'application/json'
             },
             redirect: 'follow',
-            body: JSON.stringify({id: 1, name, email, oldpass, newPass}),
-        }).then();
+            body: JSON.stringify({id: props.userID, name, email, password: newPass}),
+        }).then(() => setChangesSaved(true));
     }
     const del = () =>{
         fetch(`http://localhost:8888/api/user/${props.userID}`, {
@@ -60,7 +62,11 @@ const Profile: React.FC<ProfileProps> = (props) => {
                 'Content-Type': 'application/json'
             },
             redirect: 'follow'
-        }).then(/* redirect to login */);
+        });
+    }
+
+    if (changesSaved) {
+        return (<Redirect to="/" />);
     }
 
     return (
@@ -132,7 +138,7 @@ const Profile: React.FC<ProfileProps> = (props) => {
                                 /></td>
                             </tr>
                             <tr>
-                                <td className="text-center" colSpan={2}><button className="btn btn-primary" onClick={save}>Mentés</button></td>
+                                <td className="text-center" colSpan={2}><button type="button" className="btn btn-primary" onClick={save}>Mentés</button></td>
                             </tr>
                             <tr>
                                 <td className="text-center" colSpan={2}><button className="btn btn-outline-danger" onClick={del}>Profil törlése</button></td>
