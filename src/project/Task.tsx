@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import { taskType } from './DataTypes';
-import DeleteConfirm from './DeleteConfirm';
+import { taskType } from '../common/DataTypes';
+import DeleteConfirm from '../common/DeleteConfirm';
 
 interface TaskProps {
     task: taskType;

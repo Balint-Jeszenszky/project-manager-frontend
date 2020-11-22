@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { taskType } from './DataTypes';
+import { taskType } from '../common/DataTypes';
 
 interface NewTaskProps {
     groupID: number;

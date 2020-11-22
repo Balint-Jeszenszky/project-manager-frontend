@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Redirect} from 'react-router-dom';
-import DeleteConfirm from './DeleteConfirm';
+import DeleteConfirm from '../common/DeleteConfirm';
 
 interface ProfileProps {
     userID: number;

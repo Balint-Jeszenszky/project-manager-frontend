@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import DeleteConfirm from './DeleteConfirm';
+import DeleteConfirm from '../common/DeleteConfirm';
 
 interface ProjectDetailsProps {
     id: number;

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import Auth from './Auth';
-import Project from './Project';
-import MyProjects from './MyProjects';
-import Profile from './Profile';
-import Logout from './Logout';
+import Auth from '../auth/Auth';
+import Project from '../project/Project';
+import MyProjects from '../dashboard/MyProjects';
+import Profile from '../profile/Profile';
+import Logout from '../auth/Logout';
 
 interface ContentProps {
     loggedIn: boolean;

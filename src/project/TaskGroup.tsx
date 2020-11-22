@@ -1,8 +1,8 @@
 import React, { useState, ReactNode } from 'react';
-import { taskType } from './DataTypes';
+import { taskType } from '../common/DataTypes';
 import Task from './Task';
 import NewTask from './NewTask';
-import DeleteConfirm from './DeleteConfirm';
+import DeleteConfirm from '../common/DeleteConfirm';
 
 interface TaskGroupProps {
     priority: number;

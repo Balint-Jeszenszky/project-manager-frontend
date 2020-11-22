@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from './Navbar';
-import Content from './Content';
+import Navbar from './common/Navbar';
+import Content from './common/Content';
 import './App.css';
 
 const App: React.FC = () => {

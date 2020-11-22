@@ -1,5 +1,5 @@
 import React, {useState, useEffect, ReactNode} from 'react';
-import {projectType} from './DataTypes';
+import {projectType} from '../common/DataTypes';
 import NewProject from './NewProject';
 import ProjectDetails from './ProjectDetails';
 

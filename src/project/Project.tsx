@@ -2,7 +2,7 @@ import React, { ReactNode, useState, useEffect } from 'react';
 import { useRouteMatch } from "react-router-dom";
 import TaskGroup from './TaskGroup';
 import NewTaskGroup from './NewTaskGroup';
-import {taskgroupType, taskType} from './DataTypes';
+import {taskgroupType, taskType} from '../common/DataTypes';
 
 interface ProjectProps {
     userID: number;
