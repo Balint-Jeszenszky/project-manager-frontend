@@ -34,7 +34,7 @@ const Login: React.FC<LoginProps> = props => {
         .then(response => response.json())
         .then(response => {
             if (response.status === 401) {
-                setWronCredentials(true)
+                setWronCredentials(true);
             } else {
                 props.setUserID(response.id);
                 props.setLoggedin(true);

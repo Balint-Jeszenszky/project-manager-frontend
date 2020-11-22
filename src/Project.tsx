@@ -35,6 +35,7 @@ const Project: React.FC<ProjectProps> = (props) => {
                     />
                 );
             });
+            setTaskGroupNodes([]);
             setTaskGroupNodes(newNodes);
             setLoaded(true);
         });

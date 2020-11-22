@@ -25,7 +25,7 @@ const NewTask: React.FC<NewTaskProps> = (props) => {
     }
 
     const confirmAdd = () =>{
-        if (name.length === 0 && deadline !== '') return;
+        if (name.length === 0 || deadline === '') return;
         fetch('http://localhost:8888/api/tasks', {
             method: 'POST',
             cache: 'no-cache',

@@ -6,6 +6,7 @@ const Register: React.FC = () => {
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [success, setSuccess] = useState<boolean>(false);
+    const [alredyRegistered, setAlredyRegistered] = useState<boolean>(false);
 
     const onEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
@@ -40,13 +41,21 @@ const Register: React.FC = () => {
                 password
             }),
         })
-        .then(() => setSuccess(true));
+        .then(response => response.json())
+        .then(response => {
+            if (response.status === 409) {
+                setAlredyRegistered(true);
+            } else {
+                setSuccess(true);
+            }
+        });
     } 
 
     return (
         <div className="col-12 col-lg-4 border border-dark rounded mt-2 mt-lg-5">
             <h1 className="text-center">Register</h1>
             {success && <p className="text-success text-center">Successful registration</p>}
+            {alredyRegistered && <p className="text-danger text-center">This username is taken</p>}
             <form>
                 <div className="form-group">
                     <input type="email" className="form-control" placeholder="Email" onChange={onEmailChange} value={email} />

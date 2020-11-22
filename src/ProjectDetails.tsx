@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import DeleteConfirm from './DeleteConfirm';
 
 interface ProjectDetailsProps {
     id: number;
+    userID: number;
     name: string;
     desc: string;
     updateProjects(): void;
@@ -10,7 +12,9 @@ interface ProjectDetailsProps {
 
 const ProjectDetails: React.FC<ProjectDetailsProps> = props => {
     const [projectName, setProjectName] = useState<string>(props.name);
+    const [oldProjectName, setOldProjectName] = useState<string>(props.name);
     const [projectDescription, setProjectDescription] = useState<string>(props.desc);
+    const [oldProjectDescription, setOldProjectDescription] = useState<string>(props.desc);
     const [editing, setEditing] = useState<boolean>(false);
 
     const deleteProject = () => {
@@ -26,6 +30,11 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = props => {
     const onDescChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setProjectDescription(e.target.value);
     }
+    const cancelEdit = () => {
+        setProjectName(oldProjectName);
+        setProjectDescription(oldProjectDescription);
+        setEditing(false);
+    }
     const edit = () => {
         setEditing(false);
         fetch(`http://localhost:8888/api/project/${props.id}`, {
@@ -36,8 +45,11 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = props => {
                 'Content-Type': 'application/json'
             },
             redirect: 'follow',
-            body: JSON.stringify({id: props.id, userID: 1, name: projectName, description: projectDescription}),
-        }).then(() => props.updateProjects());
+            body: JSON.stringify({id: props.id, userID: props.userID, name: projectName, description: projectDescription}),
+        }).then(() => {
+            setOldProjectName(projectName);
+            setOldProjectDescription(projectDescription);
+        });
     }
 
     return (
@@ -59,9 +71,11 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = props => {
                 {editing && <textarea placeholder="Description" onChange={onDescChange} value={projectDescription}></textarea>}
             </td>
             <td className="text-right">
-                {!editing && <button className="btn btn-warning" onClick={() => setEditing(true)}><i className="fas fa-edit" /></button>}
+                {!editing && <button className="btn btn-primary" onClick={() => setEditing(true)}><i className="fas fa-edit" /></button>}
                 {editing && <button className="btn btn-success" onClick={edit}><i className="fas fa-check" /></button>}
-                <button className="btn btn-danger ml-2" onClick={deleteProject}><i className="fas fa-trash" /></button>
+                {!editing && <DeleteConfirm name={projectName} onConfirm={deleteProject} id={`deleteModalProject${props.id}`} />}
+                {!editing && <button className="btn btn-danger ml-2" data-toggle="modal" data-target={`#deleteModalProject${props.id}`}><i className="fas fa-trash" /></button>}
+                {editing && <button className="btn btn-danger ml-2" onClick={cancelEdit}><i className="fas fa-times" /></button>}
             </td>
         </tr>
     );

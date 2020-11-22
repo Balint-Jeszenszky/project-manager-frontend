@@ -2,6 +2,7 @@ import React, { useState, ReactNode } from 'react';
 import { taskType } from './DataTypes';
 import Task from './Task';
 import NewTask from './NewTask';
+import DeleteConfirm from './DeleteConfirm';
 
 interface TaskGroupProps {
     priority: number;
@@ -141,6 +142,7 @@ const TaskGroup: React.FC<TaskGroupProps> = props => {
 
     return (
         <div className="flex-column">
+            <DeleteConfirm name={groupName} onConfirm={deleteGroup} id={`deleteModalGroup${props.id}`} />
             <div className="taskname">
             {!editiongGroup && <span className="taskcount">{numOfTasks}</span>}
                 {!editiongGroup && groupName}
@@ -167,7 +169,7 @@ const TaskGroup: React.FC<TaskGroupProps> = props => {
                     </button>
                     <div className="dropdown-menu" aria-labelledby="dropdownMenu">
                         <button className="dropdown-item" type="button" onClick={editGroup}>Edit</button>
-                        <button className="dropdown-item" type="button" onClick={deleteGroup}>Delete</button>
+                        <button className="dropdown-item" type="button" data-toggle="modal" data-target={`#deleteModalGroup${props.id}`}>Delete</button>
                     </div>
                 </div>}
                 {!editiongGroup && <button className="inisible task-buttons mr-2 px-1" onClick={showTaskAdder}>

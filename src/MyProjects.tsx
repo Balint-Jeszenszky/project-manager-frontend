@@ -18,7 +18,7 @@ const MyProjects: React.FC<MyProjectsProps> = (props) => {
         .then(response => {
             let projs: ReactNode[] = [];
             response.forEach((e: projectType, i: number) => {
-                projs.push(<ProjectDetails id={e.id} name={e.name} desc={e.description} updateProjects={updateProjects} key={`projects/${e.id}`} />);
+                projs.push(<ProjectDetails id={e.id} userID={props.userID} name={e.name} desc={e.description} updateProjects={updateProjects} key={`projects/${e.id}`} />);
             });
             setProjects(projs);
             setLoaded(true);

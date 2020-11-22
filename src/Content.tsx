@@ -31,12 +31,6 @@ const Content: React.FC<ContentProps> = props => {
             <Route exact path="/profile">
                 {props.loggedIn ? <Profile userID={props.userID} /> : <Redirect to="/auth" />}
             </Route>
-
-
-            {/* <Route exact path='/auth' render={() => (<Auth setLoggedin={props.setLoggedin} />)}/>
-            <Route exact path='/projects' component={MyProjects} />
-            <Route path='/projects/:id' component={Project} />
-            <Route exact path='/profile' component={Profile} /> */}
             <Route exact path='/logout' render={() => (<Logout setLoggedin={props.setLoggedin} />)} />
         </Switch>
     );

@@ -16,7 +16,8 @@ const NewProject: React.FC<NewProjectProps> = props => {
         setProjectDescription(e.target.value);
     }
 
-    const addProject = () =>{
+    const addProject = () => {
+        if (projectName === '') return;
         fetch('http://localhost:8888/api/project', {
             method: 'POST',
             cache: 'no-cache',

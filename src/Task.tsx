@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import { taskType } from './DataTypes';
+import DeleteConfirm from './DeleteConfirm';
 
 interface TaskProps {
     task: taskType;
@@ -109,6 +110,7 @@ const Task: React.FC<TaskProps> = props => {
 
     return (
         <div>
+            <DeleteConfirm name={name} onConfirm={deleteTask} id={`deleteModalTask${props.task.id}`} />
             {!editing && <div className="task" key={props.task.name}>
                 <div className="title">
                     {oldName}
@@ -118,7 +120,7 @@ const Task: React.FC<TaskProps> = props => {
                         </button>
                         <div className="dropdown-menu" aria-labelledby="dropdownMenu">
                             <button className="dropdown-item" type="button" onClick={() => setEditing(true)} >Edit</button>
-                            <button className="dropdown-item" type="button" onClick={deleteTask} >Delete</button>
+                            <button className="dropdown-item" type="button" data-toggle="modal" data-target={`#deleteModalTask${props.task.id}`}>Delete</button>
                         </div>
                     </div>
 

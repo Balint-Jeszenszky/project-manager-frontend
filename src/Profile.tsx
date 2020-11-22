@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {Redirect} from 'react-router-dom';
+import DeleteConfirm from './DeleteConfirm';
 
 interface ProfileProps {
     userID: number;
@@ -14,6 +15,7 @@ const Profile: React.FC<ProfileProps> = (props) => {
     const [newPass, setNewPass] = useState<string>('');
     const [confirmPass, setConfirmPass] = useState<string>('');
     const [changesSaved, setChangesSaved] = useState<boolean>(false);
+    const [deleted, setDeleted] = useState<boolean>(false);
 
     if (!loaded) {
         fetch(`http://localhost:8888/api/user/${props.userID}`)
@@ -54,7 +56,7 @@ const Profile: React.FC<ProfileProps> = (props) => {
             body: JSON.stringify({id: props.userID, name, email, password: newPass}),
         }).then(() => setChangesSaved(true));
     }
-    const del = () =>{
+    const deleteProfile = () =>{
         fetch(`http://localhost:8888/api/user/${props.userID}`, {
             method: 'DELETE',
             headers: {
@@ -62,16 +64,22 @@ const Profile: React.FC<ProfileProps> = (props) => {
                 'Content-Type': 'application/json'
             },
             redirect: 'follow'
-        });
+        })
+        .then(() => setDeleted(true));
+    }
+
+    if (deleted) {
+        return (<Redirect to="/logout" />);
     }
 
     if (changesSaved) {
-        return (<Redirect to="/" />);
+        return (<Redirect to="/projects" />);
     }
 
     return (
         <div className="container">
             <div className="col-12 col-lg-6">
+                <DeleteConfirm name={'your profile'} onConfirm={deleteProfile} id={`deleteModalProfile${props.userID}`} />
                 <h1 className="mt-3"> Profile:</h1>
                 <form>
                     <table className="table table-borderless">
@@ -138,10 +146,14 @@ const Profile: React.FC<ProfileProps> = (props) => {
                                 /></td>
                             </tr>
                             <tr>
-                                <td className="text-center" colSpan={2}><button type="button" className="btn btn-primary" onClick={save}>Mentés</button></td>
+                                <td className="text-center" colSpan={2}>
+                                    <button type="button" className="btn btn-primary" onClick={save}>Save</button>
+                                </td>
                             </tr>
                             <tr>
-                                <td className="text-center" colSpan={2}><button className="btn btn-outline-danger" onClick={del}>Profil törlése</button></td>
+                                <td className="text-center" colSpan={2}>
+                                    <button type="button" className="btn btn-outline-danger" data-toggle="modal" data-target={`#deleteModalProfile${props.userID}`}>Delete profile</button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
