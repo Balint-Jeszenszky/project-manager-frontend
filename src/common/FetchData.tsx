@@ -2,7 +2,6 @@
 export const server = 'http://localhost:5000/api';
 
 const fetchWithData = (method: string, endpoint: string, data: string) => {
-    console.log(`${server}/${endpoint}`);
     return fetch(`${server}/${endpoint}`, {
         method: method,
         cache: 'no-cache',
