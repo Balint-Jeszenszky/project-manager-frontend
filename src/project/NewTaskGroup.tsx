@@ -1,5 +1,6 @@
 import React, { useState, ReactNode } from 'react';
 import TaskGroup from './TaskGroup';
+import {httpPost} from '../common/FetchData';
 
 interface NewTaskGroupProps {
     projectID: number;
@@ -23,16 +24,7 @@ const NewTaskGroup: React.FC<NewTaskGroupProps> = props => {
 
     const addGroup = () =>{
         setAdding(false);
-        fetch('http://localhost:8888/api/taskgroup', {
-            method: 'POST',
-            cache: 'no-cache',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            redirect: 'follow',
-            body: JSON.stringify({ProjectID: props.projectID, Name: name, Priority: props.numberOfGroups + 1}),
-        })
+        httpPost('taskgroup', JSON.stringify({ProjectID: props.projectID, Name: name, Priority: props.numberOfGroups + 1}))
         .then(response => response.json())
         .then(response => {
             props.addGroup(<TaskGroup  key={`group${response.id}`} id={response.id} projectID={props.projectID} priority={5} name={name} update={props.update}/>);

@@ -3,6 +3,7 @@ import { taskType } from '../common/DataTypes';
 import Task from './Task';
 import NewTask from './NewTask';
 import DeleteConfirm from '../common/DeleteConfirm';
+import {server, httpPut, httpDelete} from '../common/FetchData';
 
 interface TaskGroupProps {
     priority: number;
@@ -47,7 +48,7 @@ const TaskGroup: React.FC<TaskGroupProps> = props => {
     };
 
     const update = () => {
-        fetch(`http://localhost:8888/api/tasks/group/${props.id}`)
+        fetch(`${server}/tasks/group/${props.id}`)
         .then(response => response.json())
         .then(response => {
             setNumOfTasks(response.length)
@@ -80,21 +81,12 @@ const TaskGroup: React.FC<TaskGroupProps> = props => {
     };
 
     const saveGroup = () => {
-        fetch(`http://localhost:8888/api/taskgroup/${props.id}`, {
-            method: 'PUT',
-            cache: 'no-cache',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            redirect: 'follow',
-            body: JSON.stringify({
-                id: props.id,
-                projectID: props.projectID,
-                name: groupName,
-                priority: props.priority
-            }),
-        }).then(() => {
+        httpPut(`taskgroup/${props.id}`, JSON.stringify({
+            id: props.id,
+            projectID: props.projectID,
+            name: groupName,
+            priority: props.priority
+        })).then(() => {
             setEditiongGroup(false);
             setOldGroupName(groupName);
         });
@@ -112,32 +104,17 @@ const TaskGroup: React.FC<TaskGroupProps> = props => {
         setEditiongGroup(true);
     };
     const deleteGroup = () => {
-        fetch(`http://localhost:8888/api/taskgroup/${props.id}`, {
-            method: 'DELETE',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            redirect: 'follow'
-        }).then(props.update);
+        httpDelete(`taskgroup/${props.id}`)
+        .then(props.update);
     }
 
     const moveGroup = (dir: number) => {
-        fetch(`http://localhost:8888/api/taskgroup/${props.id}`, {
-            method: 'PUT',
-            cache: 'no-cache',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            redirect: 'follow',
-            body: JSON.stringify({
-                id: props.id,
-                projectID: props.projectID,
-                name: groupName,
-                priority: props.priority + dir
-            }),
-        }).then(props.update);
+        httpPut(`taskgroup/${props.id}`, JSON.stringify({
+            id: props.id,
+            projectID: props.projectID,
+            name: groupName,
+            priority: props.priority + dir
+        })).then(props.update);
     };
 
     return (

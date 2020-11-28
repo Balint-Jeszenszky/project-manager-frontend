@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Redirect} from 'react-router-dom';
 import DeleteConfirm from '../common/DeleteConfirm';
+import {server, httpPut, httpDelete} from '../common/FetchData';
 
 interface ProfileProps {
     userID: number;
@@ -18,7 +19,7 @@ const Profile: React.FC<ProfileProps> = (props) => {
     const [deleted, setDeleted] = useState<boolean>(false);
 
     if (!loaded) {
-        fetch(`http://localhost:8888/api/user/${props.userID}`)
+        fetch(`${server}/user/${props.userID}`)
         .then(response => response.json())
         .then(response => {
             setUsername(response.username);
@@ -45,26 +46,11 @@ const Profile: React.FC<ProfileProps> = (props) => {
     }
 
     const save = () =>{
-        fetch(`http://localhost:8888/api/user/${props.userID}`, {
-            method: 'PUT',
-            cache: 'no-cache',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            redirect: 'follow',
-            body: JSON.stringify({id: props.userID, name, email, password: newPass}),
-        }).then(() => setChangesSaved(true));
+        httpPut(`user/${props.userID}`, JSON.stringify({id: props.userID, name, email, password: newPass}))
+        .then(() => setChangesSaved(true));
     }
-    const deleteProfile = () =>{
-        fetch(`http://localhost:8888/api/user/${props.userID}`, {
-            method: 'DELETE',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            redirect: 'follow'
-        })
+    const deleteProfile = () => {
+        httpDelete(`user/${props.userID}`)
         .then(() => setDeleted(true));
     }
 

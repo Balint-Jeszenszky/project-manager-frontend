@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {httpPost} from '../common/FetchData';
 
 const Register: React.FC = () => {
     const [email, setEmail] = useState<string>('');
@@ -26,21 +27,12 @@ const Register: React.FC = () => {
             return;
         }
         
-        fetch('http://localhost:8888/api/user/register', {
-            method: 'POST',
-            cache: 'no-cache',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            redirect: 'follow',
-            body: JSON.stringify({
-                name,
-                username,
-                email,
-                password
-            }),
-        })
+        httpPost('user/register', JSON.stringify({
+            name,
+            username,
+            email,
+            password
+        }))
         .then(response => response.json())
         .then(response => {
             if (response.status === 409) {

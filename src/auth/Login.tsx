@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {httpPost} from '../common/FetchData';
 
 interface LoginProps {
     setLoggedin(params: boolean): void;
@@ -18,19 +19,7 @@ const Login: React.FC<LoginProps> = props => {
     }
 
     const login = () => {
-        fetch('http://localhost:8888/api/user/login', {
-            method: 'POST',
-            cache: 'no-cache',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            redirect: 'follow',
-            body: JSON.stringify({
-                username,
-                password
-            }),
-        })
+        httpPost('user/login', JSON.stringify({username, password}))
         .then(response => response.json())
         .then(response => {
             if (response.status === 401) {

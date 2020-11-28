@@ -2,6 +2,7 @@ import React, {useState, useEffect, ReactNode} from 'react';
 import {projectType} from '../common/DataTypes';
 import NewProject from './NewProject';
 import ProjectDetails from './ProjectDetails';
+import {server} from '../common/FetchData';
 
 interface MyProjectsProps {
     userID: number;
@@ -13,7 +14,7 @@ const MyProjects: React.FC<MyProjectsProps> = (props) => {
     const [addingProject, setAddingProject] = useState<boolean>(false);
     
     useEffect(() => {
-        fetch(`http://localhost:8888/api/project/projects/${props.userID}`)
+        fetch(`${server}/project/projects/${props.userID}`)
         .then(response => response.json())
         .then(response => {
             let projs: ReactNode[] = [];

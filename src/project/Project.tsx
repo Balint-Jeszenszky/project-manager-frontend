@@ -3,6 +3,7 @@ import { useRouteMatch } from "react-router-dom";
 import TaskGroup from './TaskGroup';
 import NewTaskGroup from './NewTaskGroup';
 import {taskgroupType, taskType} from '../common/DataTypes';
+import {server} from '../common/FetchData';
 
 interface ProjectProps {
     userID: number;
@@ -17,7 +18,7 @@ const Project: React.FC<ProjectProps> = (props) => {
     const PROJECTID = parseInt(Object.assign({id: ''}, useRouteMatch().params).id);
 
     const update = () => {
-        fetch(`http://localhost:8888/api/taskgroup/groups/${PROJECTID}`)
+        fetch(`${server}/taskgroup/groups/${PROJECTID}`)
         .then(response => response.json())
         .then(response => {
             const newNodes = response.sort((a: taskType, b: taskType) => {

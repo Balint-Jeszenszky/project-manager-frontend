@@ -2,7 +2,6 @@ import React from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
 
 interface NavbarProps {
-    userID: number;
     loggedIn: boolean;
 };
 

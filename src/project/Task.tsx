@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import { taskType } from '../common/DataTypes';
 import DeleteConfirm from '../common/DeleteConfirm';
+import {server, httpPut, httpDelete} from '../common/FetchData';
 
 interface TaskProps {
     task: taskType;
@@ -20,7 +21,7 @@ const Task: React.FC<TaskProps> = props => {
     const [taskGroupID, setTaskGroupID] = useState<number>(props.task.taskgroupID);
 
     if (!loaded) {
-        fetch(`http://localhost:8888/api/taskgroup/groups/${props.projectID}`)
+        fetch(`${server}/taskgroup/groups/${props.projectID}`)
         .then(response => response.json())
         .then(response => {
             setTaskGroupOptions(response.map((e: {id: number, name: string}) => {
@@ -33,32 +34,18 @@ const Task: React.FC<TaskProps> = props => {
     const deadlineDate = new Date(deadline);
 
     const deleteTask = () => {
-        fetch(`http://localhost:8888/api/tasks/${props.task.id}`, {
-            method: 'DELETE',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            redirect: 'follow'
-        }).then(props.update);
+        httpDelete(`tasks/${props.task.id}`)
+        .then(props.update);
     };
 
     const moveTask = (dir: number) => {
-        fetch(`http://localhost:8888/api/tasks/${props.task.id}`, {
-            method: 'PUT',
-            cache: 'no-cache',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            redirect: 'follow',
-            body: JSON.stringify({
-                id: props.task.id,
-                taskgroupID: props.task.taskgroupID,
-                name: name,
-                priority: props.task.priority + dir
-            }),
-        }).then(props.update);
+        httpPut(`tasks/${props.task.id}`, JSON.stringify({
+            id: props.task.id,
+            taskgroupID: props.task.taskgroupID,
+            name: name,
+            priority: props.task.priority + dir
+        }))
+        .then(props.update);
     };
 
     const onNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,23 +67,14 @@ const Task: React.FC<TaskProps> = props => {
     }
     const confirmEdit = () =>{
         if (name.length === 0 && deadline !== '') return;
-        fetch(`http://localhost:8888/api/tasks/${props.task.id}`, {
-            method: 'PUT',
-            cache: 'no-cache',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            redirect: 'follow',
-            body: JSON.stringify({
-                id: props.task.id,
-                TaskgroupID: taskGroupID,
-                Name: name,
-                Description: desc,
-                Priority: props.task.priority,
-                Deadline: deadline
-            }),
-        })
+        httpPut(`tasks/${props.task.id}`, JSON.stringify({
+            id: props.task.id,
+            TaskgroupID: taskGroupID,
+            Name: name,
+            Description: desc,
+            Priority: props.task.priority,
+            Deadline: deadline
+        }))
         .then(() => {
             setOldName(name);
             if (taskGroupID !== props.task.taskgroupID) {

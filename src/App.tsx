@@ -1,43 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Navbar from './common/Navbar';
 import Content from './common/Content';
 import './App.css';
 
 const App: React.FC = () => {
     const [loggedIn, setLoggedin] = useState<boolean>(false);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<boolean>(false);
-    const [userID, setUserID] = useState<number>(1);
-
-    useEffect(()=>{
-        fetch('https://my-json-server.typicode.com/Balint-Jeszenszky/temalab-mock-backend/logindata')
-        .then(response => response.json())
-        .then(response => {
-            setUserID(response.userid);
-            setLoading(false);
-            setUserID(response.userid);
-        })
-        .catch(error => setError(true))
-    }, []);
+    const [userID, setUserID] = useState<number>(0);
     
     return (
         <div className="box">
-            {loading && <div>Loading...</div>}
-            {!loading && !error && 
-                <div className="box">
-                    <Navbar
-                        userID={userID}
-                        loggedIn={loggedIn}
-                    />
-                    <Content
-                        loggedIn={loggedIn}
-                        setLoggedin={setLoggedin}
-                        setUserID={setUserID}
-                        userID={userID}
-                    />
-                </div>
-            }
-            {error && <div>Error</div>}
+            <div className="box">
+                <Navbar
+                    loggedIn={loggedIn}
+                />
+                <Content
+                    loggedIn={loggedIn}
+                    setLoggedin={setLoggedin}
+                    setUserID={setUserID}
+                    userID={userID}
+                />
+            </div>
         </div>
     );
 };

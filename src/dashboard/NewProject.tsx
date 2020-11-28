@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {httpPost} from '../common/FetchData';
 
 interface NewProjectProps {
     userID: number;
@@ -18,16 +19,8 @@ const NewProject: React.FC<NewProjectProps> = props => {
 
     const addProject = () => {
         if (projectName === '') return;
-        fetch('http://localhost:8888/api/project', {
-            method: 'POST',
-            cache: 'no-cache',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            redirect: 'follow',
-            body: JSON.stringify({userID: props.userID, name: projectName, description: projectDescription}),
-        }).then(() => props.updateProjects());
+        httpPost('project', JSON.stringify({userID: props.userID, name: projectName, description: projectDescription}))
+        .then(() => props.updateProjects());
     }
 
     return (

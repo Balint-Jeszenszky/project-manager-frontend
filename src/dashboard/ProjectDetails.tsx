@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import DeleteConfirm from '../common/DeleteConfirm';
+import {httpPut, httpDelete} from '../common/FetchData';
 
 interface ProjectDetailsProps {
     id: number;
@@ -18,10 +19,7 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = props => {
     const [editing, setEditing] = useState<boolean>(false);
 
     const deleteProject = () => {
-        fetch(`http://localhost:8888/api/project/${props.id}`, {
-            method: 'DELETE',
-            redirect: 'follow'
-        }).then(() => props.updateProjects());
+        httpDelete(`project/${props.id}`).then(() => props.updateProjects());
     }
 
     const onNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,16 +35,8 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = props => {
     }
     const edit = () => {
         setEditing(false);
-        fetch(`http://localhost:8888/api/project/${props.id}`, {
-            method: 'PUT',
-            cache: 'no-cache',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            redirect: 'follow',
-            body: JSON.stringify({id: props.id, userID: props.userID, name: projectName, description: projectDescription}),
-        }).then(() => {
+        httpPut(`project/${props.id}`, JSON.stringify({id: props.id, userID: props.userID, name: projectName, description: projectDescription}))
+        .then(() => {
             setOldProjectName(projectName);
             setOldProjectDescription(projectDescription);
         });

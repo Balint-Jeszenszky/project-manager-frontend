@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import { taskType } from '../common/DataTypes';
+import {httpPost} from '../common/FetchData';
 
 interface NewTaskProps {
     groupID: number;
@@ -26,22 +27,13 @@ const NewTask: React.FC<NewTaskProps> = (props) => {
 
     const confirmAdd = () =>{
         if (name.length === 0 || deadline === '') return;
-        fetch('http://localhost:8888/api/tasks', {
-            method: 'POST',
-            cache: 'no-cache',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            redirect: 'follow',
-            body: JSON.stringify({
-                TaskgroupID: props.groupID,
-                Name: name,
-                Description: desc,
-                Priority: priority,
-                Deadline: deadline
-            }),
-        })
+        httpPost('tasks', JSON.stringify({
+            TaskgroupID: props.groupID,
+            Name: name,
+            Description: desc,
+            Priority: priority,
+            Deadline: deadline
+        }))
         .then(response => response.json())
         .then(response => {
             props.confirmAdd({id: response.id, taskgroupID: props.groupID, name, description: desc, deadline, priority: priority});
