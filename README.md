@@ -13,3 +13,6 @@ A projekt BME VIK AUT témalaboratóriumra készült teendőket kezelő háromr�
 - nyissunk egy terminált és navigáljunk a projekt mappájába
 - adjuk ki a `npm run build`
 - a build mappában megtaláljuk a lefordított projektet
+- __Ha az elérési út nem a gyökér:__
+    - a package.json fájlban állítsuk be az elérési utat a "start_url" és  "homepage" kulcsokkal
+    - további információ: https://create-react-app.dev/docs/deployment/
